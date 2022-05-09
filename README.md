@@ -1,0 +1,2 @@
+# JavaProject
+NFT picture generator
