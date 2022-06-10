@@ -7,12 +7,14 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -60,20 +62,44 @@
       </MenuBar>
       <SplitPane dividerPositions="0.10579064587973273" prefHeight="950.0" prefWidth="900.0">
         <items>
-          <AnchorPane prefHeight="558.0" prefWidth="100.0" />
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <top>
+                  <FlowPane prefHeight="16.0" prefWidth="92.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label prefHeight="15.0" prefWidth="54.0" text="媒體櫃" />
+                        <Button fx:id="addMediaFileBtn" mnemonicParsing="false" onAction="#addMediaFileBtnAction" prefHeight="23.0" prefWidth="34.0" text="+" />
+                     </children>
+                  </FlowPane>
+               </top>
+               <center>
+                  <FlowPane fx:id="mediaPane" onDragDropped="#addMediaFile" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
             <SplitPane dividerPositions="0.899641577060932" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
               <items>
                   <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="783.0">
                     <items>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <center>
-                              <Canvas fx:id="workingCanvas" height="200.0" onMouseClicked="#drawAction" onMouseDragged="#drawAction" width="200.0" BorderPane.alignment="CENTER" />
+                              <ScrollPane prefHeight="200.0" prefWidth="200.0" style="-fx-background: pink;" BorderPane.alignment="CENTER">
+                                 <content>
+                                    <Canvas fx:id="workingCanvas" height="300.0" onMouseClicked="#drawAction" onMouseDragged="#drawAction" width="400.0" />
+                                 </content>
+                              </ScrollPane>
                            </center>
                            <top>
-                              <Label text="繪圖區" BorderPane.alignment="CENTER" />
+                              <FlowPane prefHeight="27.0" prefWidth="398.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Label text="繪圖區" />
+                                 </children>
+                              </FlowPane>
                            </top>
                            <bottom>
-                              <Button fx:id="btn" mnemonicParsing="false" onAction="#saveBtnAction" text="存檔" BorderPane.alignment="CENTER" />
+                              <FlowPane prefHeight="25.0" prefWidth="398.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button fx:id="btn" mnemonicParsing="false" onAction="#saveBtnAction" text="存檔" />
+                                 </children>
+                              </FlowPane>
                            </bottom>
                         </BorderPane>
                         <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">

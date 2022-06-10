@@ -1,5 +1,6 @@
 package Project;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -7,7 +8,7 @@ public class Project {
     private ArrayList<PhotoElementType> photoElementTypes;
     private int width;
     private int height;
-    private ArrayList<PhotoFile> photoSource;
+    private PhotoFiles photoFiles;
     private String saveDir;
     private RandomColorList backgroundColorList;
 
@@ -15,8 +16,10 @@ public class Project {
         photoElementTypes = new ArrayList<PhotoElementType>();
         this.width = width;
         this.height = height;
-        photoSource = new ArrayList<PhotoFile>();
+        // photoSource = new ArrayList<PhotoFile>();
+        photoFiles=new PhotoFiles();
         saveDir=null;
+        backgroundColorList=new RandomColorList();
     }
 
     public int getWidth() {
@@ -39,5 +42,18 @@ public class Project {
     public String getSaveDir(){
         return saveDir;
     }
+
+    public PhotoFiles getPhotoFiles(){
+        return this.photoFiles;
+    }
+    public void setPhotoFiles(PhotoFiles photoFiles){
+        this.photoFiles= photoFiles;
+    }
+
+    // public void addPhotoSource(File file){
+    //     System.out.println("addFile");
+    //     this.photoSource.add(new PhotoFile(file));
+    // }
+    
 
 }

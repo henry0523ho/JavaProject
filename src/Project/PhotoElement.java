@@ -1,13 +1,15 @@
 package Project;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+
+
+
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 public class PhotoElement {
     private int posX;
     private int posY;
-    private BufferedImage pixels;
-    private ArrayList< ArrayList<RandomColor> > randomColorPixels;
+    private Canvas pixels;
     private int width;
     private int height;
 
@@ -16,19 +18,15 @@ public class PhotoElement {
         this.posY = 0;
         this.width = width;
         this.height = height;
-        this.pixels=new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
-        for(int i=0;i<height;++i){
-            ArrayList<RandomColor> tmp = new ArrayList<RandomColor>(width);
-            randomColorPixels.add(tmp);
-        }
+        this.pixels=new Canvas(width,height);
     }
-    public PhotoElement(BufferedImage image){
-        this.pixels=image;
-        width = image.getWidth();
-        height = image.getHeight();
-        posX =0;
-        posY=0;
-    }
+    // public PhotoElement(BufferedImage image){
+    //     this.pixels=image;
+    //     width = image.getWidth();
+    //     height = image.getHeight();
+    //     posX =0;
+    //     posY=0;
+    // }
     
     public int getPosX(){
         return posX;
