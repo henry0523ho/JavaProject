@@ -9,6 +9,7 @@ public class Project {
     private int height;
     private ArrayList<PhotoFile> photoSource;
     private String saveDir;
+    private RandomColorList backgroundColorList;
 
     public Project(int width,int height){
         photoElementTypes = new ArrayList<PhotoElementType>();
