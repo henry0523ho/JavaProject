@@ -1,4 +1,4 @@
-package Scenes;
+package NonUsed;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

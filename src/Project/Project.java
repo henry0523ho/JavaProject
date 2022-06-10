@@ -1,7 +1,8 @@
 package Project;
 
-import java.io.File;
 import java.util.ArrayList;
+
+import javafx.scene.paint.Color;
 
 
 public class Project {
@@ -11,12 +12,12 @@ public class Project {
     private PhotoFiles photoFiles;
     private String saveDir;
     private RandomColorList backgroundColorList;
+    private PhotoElement mainElement;
 
     public Project(int width,int height){
         photoElementTypes = new ArrayList<PhotoElementType>();
         this.width = width;
         this.height = height;
-        // photoSource = new ArrayList<PhotoFile>();
         photoFiles=new PhotoFiles();
         saveDir=null;
         backgroundColorList=new RandomColorList();
@@ -50,6 +51,23 @@ public class Project {
         this.photoFiles= photoFiles;
     }
 
+    public void addBackgroundColor(Color color){
+        backgroundColorList.addColor(new RandomColor(color));
+    }
+
+    public RandomColorList getBackgroundColorList(){
+        return backgroundColorList;
+    }
+
+    public ArrayList<PhotoElementType> getPhotoElementTypes(){
+        return photoElementTypes;
+    }
+    public void setPhotoElementTypes(ArrayList<PhotoElementType> photoElementTypes){
+        this.photoElementTypes = photoElementTypes;
+    }
+    public void addPhotoElementType(PhotoElementType photoElementType){
+        this.photoElementTypes.add(photoElementType);
+    }
     // public void addPhotoSource(File file){
     //     System.out.println("addFile");
     //     this.photoSource.add(new PhotoFile(file));

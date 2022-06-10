@@ -1,8 +1,6 @@
 package Scenes;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -12,28 +10,33 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 
 public class MainSceneController {
-    Project project;
+    final Project project;
     public MainSceneController() {
-        project = new Project(400, 300);
+        int projectWidth;
+        int projectHeight;
+        projectWidth=400;
+        projectHeight=300;
+        project = new Project(projectWidth, projectHeight);
+        project.addBackgroundColor(new Color(1,0,0,1));
+        project.addBackgroundColor(new Color(0,1,0,1));
+        project.addBackgroundColor(new Color(0,0,1,1));
+        project.getBackgroundColorList().setDefaultColorPossibility();
+
+        // workingCanvas.setWidth(project.getWidth());
+        // workingCanvas.setHeight(project.getHeight());
     }
 
     @FXML
@@ -68,8 +71,8 @@ public class MainSceneController {
 
     @FXML
     void addMediaFile(DragEvent event) {
-        Dragboard db = event.getDragboard();
-        File file = db.getFiles().get(0);
+        // Dragboard db = event.getDragboard();
+        // File file = db.getFiles().get(0);
         // project.addPhotoSource(file);
     }
 

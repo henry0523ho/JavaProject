@@ -1,15 +1,12 @@
 package Project;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 public class RandomColorList {
     private ArrayList<RandomColor> colorList;
-    private RandomColor currentColor;
-
+    
     public RandomColorList(){
         colorList = new ArrayList<RandomColor>();
-        currentColor=null;
     }
 
     public void setDefaultColorPossibility(){
@@ -27,5 +24,27 @@ public class RandomColorList {
             return true;
         }
         return false;
+    }
+
+    public void addColor(RandomColor color){
+        if(findColor(color)==-1){
+            this.colorList.add(color);
+        }
+    }
+
+    public void removeColor(RandomColor color){
+        int idx=findColor(color);
+        if(idx!=-1){
+            colorList.remove(idx);
+        }
+    }
+
+    public int findColor(RandomColor color){
+        for(int i=0;i<colorList.size();++i){
+            if(colorList.get(i).equals(color)){
+                return i;
+            }
+        }
+        return -1;
     }
 }

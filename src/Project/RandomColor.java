@@ -1,7 +1,6 @@
 package Project;
 
-import java.awt.Color;
-import java.util.ArrayList;
+import javafx.scene.paint.Color;
 
 public class RandomColor {
     private Color color;
