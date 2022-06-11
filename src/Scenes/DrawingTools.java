@@ -56,7 +56,7 @@ public class DrawingTools {
     public static GraphicsContext drawBackground(GraphicsContext gc,Color color){
         double height=gc.getCanvas().getHeight();
         double width=gc.getCanvas().getWidth();
-        gc.setColor(color);
+        // gc.setColor(color);
         gc.fillRect(0,0,width,height);
         return gc;
     }
