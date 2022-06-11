@@ -1,6 +1,7 @@
 package Project;
 
 import java.util.ArrayList;
+import java.security.SecureRandom;
 
 public class PhotoElementType {
     private String typeName;
@@ -26,5 +27,16 @@ public class PhotoElementType {
     }
     public void addPhotoElement(PhotoElement photoElement) {
         this.photoElements.add(photoElement);
+    }
+
+    public PhotoElement dealAtLeastOnePhotoElement(){
+        SecureRandom secureRandom=new SecureRandom();
+        double rand=secureRandom.nextDouble();
+        double cur=0;
+        for(PhotoElement pe:photoElements){
+            cur+=pe.getPossibility();
+            if(cur>rand) return pe;
+        }
+        return photoElements.get(photoElements.size()-1);
     }
 }
