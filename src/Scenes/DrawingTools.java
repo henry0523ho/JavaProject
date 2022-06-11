@@ -29,4 +29,35 @@ public class DrawingTools {
         dist+=Math.sqrt((a.getBlue()-b.getBlue())*(a.getBlue() - b.getBlue()));
         return dist;
     }
+
+    public static GraphicsContext addLayer(GraphicsContext origin,GraphicsContext addition){
+        WritableImage originSnap = origin.getCanvas().snapshot(null, null);
+        PixelReader originPixels =originSnap.getPixelReader();
+        WritableImage additionSnap = addition.getCanvas().snapshot(null, null);
+        PixelReader additionPixels = additionSnap.getPixelReader();
+        double height=origin.getCanvas().getHeight();
+        double width=origin.getCanvas().getWidth();
+        for(int i=0;i<height;++i){
+            for(int j=0;j<width;++j){
+                origin.getPixelWriter().setColor(j,i,addColor(originPixels.getColor(j,i),additionPixels.getColor(j,i)));
+            }
+        }
+
+        return origin;
+    }
+    public static Color addColor(Color a,Color b){
+        double red=Math.min(1.0,(a.getRed()*a.getOpacity()+b.getRed()*b.getOpacity()));
+        double green=Math.min(1.0,(a.getGreen()*a.getOpacity()+b.getGreen()*b.getOpacity()));
+        double blue=Math.min(1.0,(a.getBlue()*a.getOpacity()+b.getBlue()*b.getOpacity()));
+        double opacity=Math.min(1.0,(a.getOpacity()+b.getOpacity()));
+        return new Color(red,green,blue,opacity);
+    }
+
+    public static GraphicsContext drawBackground(GraphicsContext gc,Color color){
+        double height=gc.getCanvas().getHeight();
+        double width=gc.getCanvas().getWidth();
+        gc.setColor(color);
+        gc.fillRect(0,0,width,height);
+        return gc;
+    }
 }

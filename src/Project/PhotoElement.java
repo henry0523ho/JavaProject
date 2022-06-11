@@ -12,6 +12,7 @@ public class PhotoElement {
     private Canvas pixels;
     private int width;
     private int height;
+    private double possibility;
 
     public PhotoElement(int width,int height){
         this.posX = 0;
@@ -19,6 +20,7 @@ public class PhotoElement {
         this.width = width;
         this.height = height;
         this.pixels=new Canvas(width,height);
+        this.possibility=0.5;
     }
     
     public int getPosX(){
@@ -38,6 +40,10 @@ public class PhotoElement {
     }
     public Canvas getPixels(){
         return this.pixels;
+    }
+
+    public double getPossibility(){
+        return possibility;
     }
     
 }

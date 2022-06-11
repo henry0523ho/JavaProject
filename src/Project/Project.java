@@ -2,6 +2,8 @@ package Project;
 
 import java.util.ArrayList;
 
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 
@@ -73,7 +75,9 @@ public class Project {
     //     this.photoSource.add(new PhotoFile(file));
     // }
     public void generateResult(int n){
-        
+        Canvas canvas=new Canvas(width, height);
+        GraphicsContext gc=canvas.getGraphicsContext2D();
+        mainElementType.dealAtLeastOnePhotoElement().getPixels();
     }
 
 }
