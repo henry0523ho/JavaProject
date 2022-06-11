@@ -12,7 +12,7 @@ public class Project {
     private PhotoFiles photoFiles;
     private String saveDir;
     private RandomColorList backgroundColorList;
-    private PhotoElement mainElement;
+    private PhotoElementType mainElementType;
 
     public Project(int width,int height){
         photoElementTypes = new ArrayList<PhotoElementType>();
@@ -72,6 +72,8 @@ public class Project {
     //     System.out.println("addFile");
     //     this.photoSource.add(new PhotoFile(file));
     // }
-    
+    public void generateResult(int n){
+        
+    }
 
 }

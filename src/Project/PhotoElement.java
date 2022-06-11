@@ -20,13 +20,6 @@ public class PhotoElement {
         this.height = height;
         this.pixels=new Canvas(width,height);
     }
-    // public PhotoElement(BufferedImage image){
-    //     this.pixels=image;
-    //     width = image.getWidth();
-    //     height = image.getHeight();
-    //     posX =0;
-    //     posY=0;
-    // }
     
     public int getPosX(){
         return posX;
@@ -40,4 +33,11 @@ public class PhotoElement {
     public void setPosY(int posY){
         this.posY= posY;
     }
+    public void setPixels(Canvas pixels){
+        this.pixels= pixels;
+    }
+    public Canvas getPixels(){
+        return this.pixels;
+    }
+    
 }
