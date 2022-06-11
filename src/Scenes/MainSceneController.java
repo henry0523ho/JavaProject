@@ -53,13 +53,16 @@ public class MainSceneController {
 
     @FXML
     void saveBtnAction(ActionEvent event) {
-        WritableImage wim = new WritableImage(300, 250);
-        workingCanvas.snapshot(null, wim);
-        File file = new File("CanvasImage.png");
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", file);
-        } catch (Exception s) {
-        }
+        // WritableImage wim = new WritableImage(300, 250);
+        // workingCanvas.snapshot(null, wim);
+        // File file = new File("CanvasImage.png");
+        // try {
+        //     ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", file);
+        // } catch (Exception s) {
+        // }
+
+        GraphicsContext gc= workingCanvas.getGraphicsContext2D();
+        gc=DrawingTools.removeBackground(gc, 1, 1,0.5);
     }
 
     @FXML

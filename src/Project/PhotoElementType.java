@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class PhotoElementType {
     private String typeName;
-    private ArrayList<PhotoElement> photoElement;
+    private ArrayList<PhotoElement> photoElements;
     
     public PhotoElementType(String name) {
         typeName=name;
-        photoElement=new ArrayList<PhotoElement>();
+        photoElements=new ArrayList<PhotoElement>();
     }
 
     public String getTypeName() {
@@ -16,5 +16,15 @@ public class PhotoElementType {
     }
     public void setTypeName(String typeName) {
         this.typeName=typeName;
+    }
+
+    public ArrayList<PhotoElement> getPhotoElements() {
+        return photoElements;
+    }
+    public void setPhotoElements(ArrayList<PhotoElement> photoElements) {
+        this.photoElements=photoElements;
+    }
+    public void addPhotoElement(PhotoElement photoElement) {
+        this.photoElements.add(photoElement);
     }
 }
