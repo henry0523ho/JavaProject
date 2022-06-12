@@ -1,9 +1,35 @@
 package Scenes;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+
+import javax.imageio.ImageIO;
+
+import Project.PhotoElement;
+import javafx.embed.swing.SwingFXUtils;
+
+import Project.PhotoElement;
+import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Transform;
 
 public class DrawingTools {
     public static GraphicsContext removeBackground(GraphicsContext gc,int x,int y,double offset){
@@ -56,8 +82,77 @@ public class DrawingTools {
     public static GraphicsContext drawBackground(GraphicsContext gc,Color color){
         double height=gc.getCanvas().getHeight();
         double width=gc.getCanvas().getWidth();
-        // gc.setColor(color);
         gc.fillRect(0,0,width,height);
         return gc;
     }
+
+    public static PhotoElement fileToPhotoElement(File file){
+        Image image=new Image(file.getAbsolutePath());
+        PhotoElement ret=new PhotoElement(image.getWidth(),image.getHeight());
+        ret.getPixels().getGraphicsContext2D().drawImage(image,0,0);
+        return ret;
+    }
+
+    public static Canvas deepCopyCanvas(Canvas canvas){
+        Canvas ret=new Canvas(canvas.getWidth(),canvas.getHeight());
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);         
+        WritableImage image = canvas.snapshot(params, null);
+        ret.getGraphicsContext2D().drawImage(image, 0, 0);
+        return ret;
+    }
+
+    public static GraphicsContext scaleGraphicsContext(GraphicsContext gc,double width,double height){
+        double w=gc.getCanvas().getWidth();
+        double h=gc.getCanvas().getHeight();
+        Scale scale = new Scale(width/w, height/h);
+        gc.setTransform(new Affine(scale));
+        gc.stroke();
+        return gc;
+    }
+
+    public static Canvas scaleCanvas(Canvas canvas,double width,double height){
+        double w=canvas.getWidth();
+        double h=canvas.getHeight();
+        double scaleX=width/w;
+        double scaleY=height/h;
+        Canvas newCanvas=deepCopyCanvas(canvas);
+        newCanvas.setScaleX(scaleX);
+        newCanvas.setScaleY(scaleY);
+        return newCanvas; 
+    }
+
+    public static void saveCanvas(Canvas canvas,String fileName){
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);         
+        WritableImage image = canvas.snapshot(params, null);
+        File file = new File(fileName);
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+        } catch (Exception s) {
+        }
+    }
+
+    public static Button generateButton(Node arg0, String name){
+        Button btn = new Button();
+        GridPane gp= new GridPane();
+        BorderPane p1=new BorderPane(arg0,null,null,null,null);
+        Label label = new Label(name);
+        label.setTextAlignment(TextAlignment.CENTER);
+        BorderPane p2=new BorderPane(label,null,null,null,null);
+        p1.setMaxSize(100, 80);
+        p1.setPrefSize(100,80);
+        p1.setMinSize(100,80);
+        p2.setMaxSize(100,20);
+        p2.setMinSize(100,20);
+        p2.setPrefSize(100,20);
+        gp.add(p1,0,0);
+        gp.add(p2,0,1);
+        btn.setGraphic(gp);
+        btn.setMaxSize(100,100);
+        btn.setPrefSize(100,100);
+        btn.setMinSize(100,100);
+        return btn;
+    }
+
 }

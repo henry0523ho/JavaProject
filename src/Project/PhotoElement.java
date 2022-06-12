@@ -1,40 +1,36 @@
 package Project;
 
 
-
+import Scenes.DrawingTools;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 
 public class PhotoElement {
-    private int posX;
-    private int posY;
+    private double posX;
+    private double posY;
     private Canvas pixels;
-    private int width;
-    private int height;
+    private double width;
+    private double height;
     private double possibility;
+    private String name;
 
-    public PhotoElement(int width,int height){
-        this.posX = 0;
-        this.posY = 0;
+    public PhotoElement(double width,double height){
         this.width = width;
         this.height = height;
         this.pixels=new Canvas(width,height);
         this.possibility=0.5;
+        posX=0;
+        posY=0;
+        name="name";
     }
     
-    public int getPosX(){
-        return posX;
-    }
-    public int getPosY(){
-        return posY;
-    }
-    public void setPosX(int posX){
-        this.posX= posX;
-    }
-    public void setPosY(int posY){
-        this.posY= posY;
-    }
+    
+    
     public void setPixels(Canvas pixels){
         this.pixels= pixels;
     }
@@ -45,5 +41,22 @@ public class PhotoElement {
     public double getPossibility(){
         return possibility;
     }
+
+
+    public void setName(String name){
+        this.name = name;
+    }
+    public String getName(){
+        return name;
+    }
+
+    public Button generateElementBtn(){
+        if(pixels.getHeight()<pixels.getWidth()){
+            return DrawingTools.generateButton(DrawingTools.scaleCanvas(pixels,90,(90/pixels.getWidth())*pixels.getHeight()), name);
+        }else{
+            return DrawingTools.generateButton(DrawingTools.scaleCanvas(pixels,(70/pixels.getHeight())*pixels.getWidth(),70), name);
+        }
+    }
+    
     
 }

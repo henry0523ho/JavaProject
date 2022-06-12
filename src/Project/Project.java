@@ -1,5 +1,6 @@
 package Project;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javafx.scene.canvas.Canvas;
@@ -12,12 +13,12 @@ public class Project {
     private int width;
     private int height;
     private PhotoFiles photoFiles;
-    private String saveDir;
+    private File saveDir;
     private RandomColorList backgroundColorList;
-    private PhotoElementType mainElementType;
 
     public Project(int width,int height){
         photoElementTypes = new ArrayList<PhotoElementType>();
+        this.addPhotoElementType(new PhotoElementType("預設"));
         this.width = width;
         this.height = height;
         photoFiles=new PhotoFiles();
@@ -39,10 +40,10 @@ public class Project {
         this.height = height;
     }
 
-    public void setSaveDir(String saveDir) {
+    public void setSaveDir(File saveDir) {
         this.saveDir = saveDir;
     }
-    public String getSaveDir(){
+    public File getSaveDir(){
         return saveDir;
     }
 
@@ -70,14 +71,13 @@ public class Project {
     public void addPhotoElementType(PhotoElementType photoElementType){
         this.photoElementTypes.add(photoElementType);
     }
-    // public void addPhotoSource(File file){
-    //     System.out.println("addFile");
-    //     this.photoSource.add(new PhotoFile(file));
-    // }
+    public void addPhotoElementType(String typeName){
+        this.photoElementTypes.add(new PhotoElementType(typeName));
+    }
     public void generateResult(int n){
         Canvas canvas=new Canvas(width, height);
         GraphicsContext gc=canvas.getGraphicsContext2D();
-        mainElementType.dealAtLeastOnePhotoElement().getPixels();
+        
     }
 
 }

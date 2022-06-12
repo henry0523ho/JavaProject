@@ -78,13 +78,13 @@
                   <FlowPane fx:id="mediaPane" onDragDropped="#addMediaFile" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
-            <SplitPane orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+            <SplitPane dividerPositions="0.5859598853868195" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
               <items>
                   <SplitPane dividerPositions="0.69875" prefHeight="160.0" prefWidth="783.0">
                     <items>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <center>
-                              <ScrollPane prefHeight="200.0" prefWidth="557.0" style="-fx-background: pink;" BorderPane.alignment="CENTER">
+                              <ScrollPane fx:id="workingPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="557.0" style="-fx-background: pink;" BorderPane.alignment="CENTER">
                                  <content>
                                     <Canvas fx:id="workingCanvas" height="300.0" onMouseClicked="#drawAction" onMouseDragged="#drawAction" width="400.0" />
                                  </content>
@@ -168,10 +168,28 @@
                                        </children></AnchorPane>
                               </content>
                             </Tab>
+                              <Tab text="預覽">
+                                 <content>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                       <center>
+                                          <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                             <content>
+                                                <Canvas fx:id="showCanvas" height="200.0" width="200.0" />
+                                             </content>
+                                          </ScrollPane>
+                                       </center>
+                                    </BorderPane>
+                                 </content>
+                              </Tab>
                           </tabs>
                         </TabPane>
                     </items>
                   </SplitPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <ScrollPane fx:id="elementPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
               </items>
             </SplitPane>
         </items>
