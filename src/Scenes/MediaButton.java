@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.TextAlignment;
 
 public class MediaButton {
     String fileName;
@@ -23,17 +24,17 @@ public class MediaButton {
     }
 
     public Button generateButton() {
-        Button btn = new Button();
         ImageView imageView = new ImageView();
         imageView.setImage(image);
-        imageView.setFitWidth(80);
-        imageView.setFitHeight(70);
-        Label label= new Label(fileName);
-        label.setMaxHeight(16);
-        label.setMaxWidth(80);
-        BorderPane borderPanel = new BorderPane(imageView,null,null,label,null);
-        btn.setGraphic(borderPanel);
-        return btn;
+        System.out.println(fileName);
+        if(image.getHeight()<image.getWidth()){
+            imageView.setFitWidth(90);
+            imageView.setFitHeight((90/image.getWidth())*image.getHeight());
+        }else{
+            imageView.setFitHeight(70);
+            imageView.setFitWidth((70/image.getHeight())*image.getWidth());
+        }
+        return DrawingTools.generateButton(imageView,fileName);
     }
 
 

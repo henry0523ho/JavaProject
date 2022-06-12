@@ -5,18 +5,22 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import Project.PhotoElement;
+import Project.PhotoElementType;
 import Project.Project;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -24,6 +28,7 @@ import javafx.scene.input.DragEvent;
 
 public class MainSceneController {
     final Project project;
+
     public MainSceneController() {
         int projectWidth;
         int projectHeight;
@@ -50,19 +55,15 @@ public class MainSceneController {
 
     @FXML
     private Button addMediaFileBtn;
+    @FXML
+    private ScrollPane workingPane;
+    @FXML
+    private ScrollPane elementPane;
 
     @FXML
     void saveBtnAction(ActionEvent event) {
-        // WritableImage wim = new WritableImage(300, 250);
-        // workingCanvas.snapshot(null, wim);
-        // File file = new File("CanvasImage.png");
-        // try {
-        //     ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", file);
-        // } catch (Exception s) {
-        // }
-
-        GraphicsContext gc= workingCanvas.getGraphicsContext2D();
-        gc=DrawingTools.removeBackground(gc, 1, 1,0.5);
+        workingCanvas=DrawingTools.scaleCanvas(workingCanvas,90,(90/workingCanvas.getWidth())*workingCanvas.getHeight());
+        updateWorkCanvas();
     }
 
     @FXML
@@ -90,8 +91,10 @@ public class MainSceneController {
                 new FileChooser.ExtensionFilter("All Images", "*.*"));
         List<File> files = fileChooser.showOpenMultipleDialog(getCurrentStage());
         // System.out.println(files);
-        for (File file : files) {
-            project.getPhotoFiles().addPhotoSource(file);
+        if(files!=null){
+            for (File file : files) {
+                project.getPhotoFiles().addPhotoSource(file);
+            }
         }
         updateMediaPane();
     }
@@ -105,17 +108,38 @@ public class MainSceneController {
             newBtn.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    toWorkCanvas(file);
+                    PhotoElement pe=DrawingTools.fileToPhotoElement(file);
+                    project.getPhotoElementTypes().get(0).addPhotoElement(pe);
+                    updateElementTable();
+                    toWorkCanvas(pe);
                 }
             });
         }
     }
 
-    void toWorkCanvas(File file) {
-        GraphicsContext gc=workingCanvas.getGraphicsContext2D();
-        Image image= new Image(file.getAbsolutePath());
-        gc.drawImage(image,0,0);
-        gc.restore();
+    void toWorkCanvas(PhotoElement pe){
+        workingCanvas=pe.getPixels();
+        updateWorkCanvas();
+    }
+
+    void updateWorkCanvas(){
+        workingPane.setContent(workingCanvas);
+        workingCanvas.setOnMouseClicked((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                GraphicsContext gc = workingCanvas.getGraphicsContext2D();
+                gc.fillOval(event.getX(), event.getY(), 10, 10);
+                updateElementTable();
+            }
+        });
+        workingCanvas.setOnMouseDragged((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                GraphicsContext gc = workingCanvas.getGraphicsContext2D();
+                gc.fillOval(event.getX(), event.getY(), 10, 10);
+                updateElementTable();
+            }
+        });
     }
 
     Window getCurrentStage() {
@@ -128,6 +152,27 @@ public class MainSceneController {
             ret[i] = "*." + ImageIO.getReaderFileSuffixes()[i];
         }
         return ret;
+    }
+
+    void updateElementTable(){
+        GridPane elementTable=new GridPane();
+        for(int i=0;i<project.getPhotoElementTypes().size();++i){
+            PhotoElementType pet = project.getPhotoElementTypes().get(i);
+            elementTable.add(new Label(pet.getTypeName()),i,0);
+            for(int j=1;j<=pet.getPhotoElements().size();++j){
+                PhotoElement pe=pet.getPhotoElements().get(j-1);
+                Button btn=pe.generateElementBtn();
+                elementTable.add(btn,i,j);
+                btn.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        toWorkCanvas(pe);
+                        updateWorkCanvas();
+                    }
+                });
+            }
+        }
+        elementPane.setContent(elementTable);
     }
 
 }
