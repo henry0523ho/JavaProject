@@ -2,6 +2,7 @@ package Scenes;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,6 +23,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -29,6 +31,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ButtonBar.ButtonData;
 
 public class MainSceneController implements Initializable{
     final Project project;
@@ -71,7 +78,16 @@ public class MainSceneController implements Initializable{
     private Slider slider;
     @FXML
     private Label sliderLabel;
-    
+    @FXML
+    private TextField setHeigth;
+    @FXML
+    private TextField setWidth;
+    @FXML
+    private TextField setPosX;
+    @FXML
+    private TextField setPosY;
+    @FXML
+    private TextField setPossibility;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         String[] workModes={"畫筆","去背"};
@@ -80,6 +96,12 @@ public class MainSceneController implements Initializable{
         colorPicker.setValue(Color.BLACK);
         slider.setShowTickLabels(true);
         slider.setShowTickMarks(true);
+        setHeigth.setOnKeyPressed(this::setSize);
+        setWidth.setOnKeyPressed(this::setSize);
+        setPosX.setOnKeyPressed(this::setSize);
+        setPosY.setOnKeyPressed(this::setSize);
+        setPossibility.setOnKeyPressed(this::setSize);
+        
         // workingPane.setBackground(new Background(new BackgroundImage(new Image("shark.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
     }
     @FXML
@@ -145,6 +167,7 @@ public class MainSceneController implements Initializable{
     }
 
     void updateWorkCanvas(){
+        updateSetSize();
         workingPane.setContent(workingCanvas);
         modeChoiceBox.setValue("畫筆");
         changeWorkMode(null);
@@ -155,7 +178,7 @@ public class MainSceneController implements Initializable{
             }
         });
     }
-
+    
     void paintMode(){
         colorPicker.setDisable(false);
         sliderLabel.setText("粗細:");
@@ -216,16 +239,68 @@ public class MainSceneController implements Initializable{
                 PhotoElement pe=pet.getPhotoElements().get(j-1);
                 Button btn=pe.generateElementBtn();
                 elementTable.add(btn,i,j);
+                final int peID=j-1;
+                final int petID=i;
                 btn.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        photoElementId=peID;
+                        photoElementTypeId=petID;
                         toWorkCanvas(pe);
                         updateWorkCanvas();
+                        
                     }
                 });
             }
         }
         elementPane.setContent(elementTable);
+    
+    }
+    void showDialog()
+    {
+        Dialog<String> dialog=new Dialog<String>();
+        dialog.setTitle("Error!!!");
+        ButtonType type = new ButtonType("Ok", ButtonData.OK_DONE);
+        dialog.setContentText("輸入錯誤");
+        dialog.getDialogPane().getButtonTypes().add(type);
+
+        dialog.showAndWait();
+    }
+    int photoElementTypeId;
+    int photoElementId;
+    public void setSize(KeyEvent event) {
+        //System.out.printf("%s\n",setHeigth.getText());
+        if(event.getCode().equals(KeyCode.ENTER))
+        {
+            try 
+            {
+                project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setHeight(Double.parseDouble(setHeigth.getText()));
+                project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setWidth(Double.parseDouble(setWidth.getText()));
+                project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setPosX(Double.parseDouble(setPosX.getText()));
+                project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setPosY(Double.parseDouble(setPosY.getText()));
+                project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setPossibility(Double.parseDouble(setPossibility.getText()));
+
+            }
+            catch(NumberFormatException e)
+            {
+                System.out.println(e);
+                showDialog();
+            } 
+            catch (Exception e) {
+                //TODO: handle exception
+                System.out.println(e);;
+                showDialog();
+            }
+        }
+        
+    }
+    public void updateSetSize()
+    {
+        setHeigth.setText(String.format("%.2f", project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getHeight()));
+        setWidth.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getWidth()));
+        setPosX.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosX()));
+        setPosY.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosY()));
+        setPossibility.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPossibility()));
     }
 
 
