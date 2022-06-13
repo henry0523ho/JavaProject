@@ -4,11 +4,7 @@ package Project;
 import Scenes.DrawingTools;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 
 public class PhotoElement {
     private double posX;

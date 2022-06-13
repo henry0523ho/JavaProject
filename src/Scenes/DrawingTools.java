@@ -1,18 +1,13 @@
 package Scenes;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+
 import java.io.File;
-import java.io.IOException;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 
 import javax.imageio.ImageIO;
 
 import Project.PhotoElement;
 import javafx.embed.swing.SwingFXUtils;
 
-import Project.PhotoElement;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -24,12 +19,10 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Scale;
-import javafx.scene.transform.Transform;
 
 public class DrawingTools {
     public static GraphicsContext removeBackground(GraphicsContext gc,int x,int y,double offset){
