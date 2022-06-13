@@ -4,12 +4,14 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -78,7 +80,7 @@
                   <FlowPane fx:id="mediaPane" onDragDropped="#addMediaFile" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
-            <SplitPane dividerPositions="0.5859598853868195" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+            <SplitPane orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
               <items>
                   <SplitPane dividerPositions="0.69875" prefHeight="160.0" prefWidth="783.0">
                     <items>
@@ -94,6 +96,10 @@
                               <FlowPane prefHeight="27.0" prefWidth="398.0" BorderPane.alignment="CENTER">
                                  <children>
                                     <Label text="繪圖區" />
+                                    <ChoiceBox fx:id="modeChoiceBox" prefHeight="23.0" prefWidth="99.0" />
+                                    <ColorPicker fx:id="colorPicker" />
+                                    <Label text="粗細" />
+                                    <Slider />
                                  </children>
                               </FlowPane>
                            </top>

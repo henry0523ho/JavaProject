@@ -1,7 +1,9 @@
 package Scenes;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
@@ -11,9 +13,11 @@ import Project.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -26,7 +30,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.scene.input.DragEvent;
 
-public class MainSceneController {
+public class MainSceneController implements Initializable{
     final Project project;
 
     public MainSceneController() {
@@ -59,7 +63,16 @@ public class MainSceneController {
     private ScrollPane workingPane;
     @FXML
     private ScrollPane elementPane;
-
+    @FXML
+    private ChoiceBox<String> modeChoiceBox;
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        String[] workModes={"畫筆","去背"};
+        modeChoiceBox.getItems().addAll(workModes);
+        modeChoiceBox.setOnAction(this::changeWorkMode);
+        
+    }
     @FXML
     void saveBtnAction(ActionEvent event) {
         workingCanvas=DrawingTools.scaleCanvas(workingCanvas,90,(90/workingCanvas.getWidth())*workingCanvas.getHeight());
@@ -99,6 +112,15 @@ public class MainSceneController {
         updateMediaPane();
     }
 
+    public void changeWorkMode(ActionEvent event){
+        String currentMode = modeChoiceBox.getValue();
+        if(currentMode=="畫筆"){
+            paintMode();
+        }else if(currentMode=="去背"){
+            removeBackgroundMode();
+        }
+    }
+
     void updateMediaPane() {
         mediaPane.getChildren().clear();
         for (File file : project.getPhotoFiles().getPhotoSources()) {
@@ -124,12 +146,24 @@ public class MainSceneController {
 
     void updateWorkCanvas(){
         workingPane.setContent(workingCanvas);
-        workingCanvas.setOnMouseClicked((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
+        
+        workingCanvas.setOnMouseReleased((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 GraphicsContext gc = workingCanvas.getGraphicsContext2D();
                 gc.fillOval(event.getX(), event.getY(), 10, 10);
                 updateElementTable();
+            }
+        });
+    }
+
+    void paintMode(){
+        workingCanvas.setOnMouseClicked((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                GraphicsContext gc = workingCanvas.getGraphicsContext2D();
+                gc.fillOval(event.getX(), event.getY(), 10, 10);
+                gc.restore();
             }
         });
         workingCanvas.setOnMouseDragged((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
@@ -137,9 +171,21 @@ public class MainSceneController {
             public void handle(MouseEvent event) {
                 GraphicsContext gc = workingCanvas.getGraphicsContext2D();
                 gc.fillOval(event.getX(), event.getY(), 10, 10);
-                updateElementTable();
+                gc.restore();
             }
         });
+    }
+
+    void removeBackgroundMode(){
+        workingCanvas.setOnMouseClicked((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                GraphicsContext gc = workingCanvas.getGraphicsContext2D();
+                gc=DrawingTools.removeBackground(gc,(int)event.getX(), (int)event.getY(), 0.1);
+
+            }
+        });
+        workingCanvas.setOnMouseDragged(null);
     }
 
     Window getCurrentStage() {
@@ -174,5 +220,6 @@ public class MainSceneController {
         }
         elementPane.setContent(elementTable);
     }
+
 
 }
