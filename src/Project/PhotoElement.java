@@ -26,7 +26,36 @@ public class PhotoElement {
     }
     
     
-    
+    public void setHeight(double height){
+        this.height=height;
+    }
+    public double getHeight()
+    {
+        return this.height;
+    }
+    public void setWidth(double width){
+        this.width=width;
+    }
+    public double getWidth()
+    {
+        return this.width;
+    }
+    public void setPosX(double posX)
+    {
+        this.posX=posX;
+    }
+    public double getPosX()
+    {
+        return this.posX;
+    }
+    public void setPosY(double posY)
+    {
+        this.posY=posY;
+    }
+    public double getPosY()
+    {
+        return this.posY;
+    }
     public void setPixels(Canvas pixels){
         this.pixels= pixels;
     }
@@ -37,7 +66,9 @@ public class PhotoElement {
     public double getPossibility(){
         return possibility;
     }
-
+    public void setPossibility(double possibility){
+        this.possibility=possibility;
+    }
 
     public void setName(String name){
         this.name = name;

@@ -80,7 +80,7 @@
                   <FlowPane fx:id="mediaPane" onDragDropped="#addMediaFile" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
-            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+            <SplitPane dividerPositions="0.8028673835125448" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
               <items>
                   <SplitPane dividerPositions="0.69875" prefHeight="160.0" prefWidth="783.0">
                     <items>
@@ -128,7 +128,7 @@
                                                 <Font name="System Bold" size="19.0" />
                                              </font>
                                           </Label>
-                                          <TextField layoutX="73.0" layoutY="120.0" />
+                                          <TextField fx:id="setPossibility" layoutX="73.0" layoutY="120.0" />
                                        </children>
                                     </AnchorPane>
                                  </content>
@@ -152,8 +152,8 @@
                                                 <Font size="20.0" />
                                              </font>
                                           </Label>
-                                          <TextField layoutX="66.0" layoutY="56.0" />
-                                          <TextField layoutX="66.0" layoutY="85.0" />
+                                          <TextField fx:id="setHeigth" layoutX="66.0" layoutY="56.0" />
+                                          <TextField fx:id="setWidth" layoutX="66.0" layoutY="85.0" />
                                           <Label layoutX="13.0" layoutY="124.0" prefHeight="40.0" prefWidth="92.0" text="設定位置:" textAlignment="CENTER">
                                              <font>
                                                 <Font name="System Bold Italic" size="20.0" />
@@ -169,8 +169,8 @@
                                                 <Font size="20.0" />
                                              </font>
                                           </Label>
-                                          <TextField layoutX="66.0" layoutY="193.0" />
-                                          <TextField layoutX="66.0" layoutY="166.0" />
+                                          <TextField fx:id="setPosY" layoutX="66.0" layoutY="193.0" />
+                                          <TextField fx:id="setPosX" layoutX="66.0" layoutY="166.0" />
                                        </children></AnchorPane>
                               </content>
                             </Tab>
