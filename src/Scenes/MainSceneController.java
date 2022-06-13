@@ -18,8 +18,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -65,25 +67,26 @@ public class MainSceneController implements Initializable{
     private ScrollPane elementPane;
     @FXML
     private ChoiceBox<String> modeChoiceBox;
+    @FXML
+    private ColorPicker colorPicker;
+    @FXML
+    private Slider slider;
+    @FXML
+    private Label sliderLabel;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         String[] workModes={"畫筆","去背"};
         modeChoiceBox.getItems().addAll(workModes);
         modeChoiceBox.setOnAction(this::changeWorkMode);
-        
+        colorPicker.setValue(Color.BLACK);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
     }
     @FXML
     void saveBtnAction(ActionEvent event) {
         workingCanvas=DrawingTools.scaleCanvas(workingCanvas,90,(90/workingCanvas.getWidth())*workingCanvas.getHeight());
         updateWorkCanvas();
-    }
-
-    @FXML
-    void drawAction(MouseEvent event) {
-        GraphicsContext gc = workingCanvas.getGraphicsContext2D();
-        gc.fillOval(event.getX(), event.getY(), 10, 10);
-        
     }
 
     @FXML
@@ -95,7 +98,6 @@ public class MainSceneController implements Initializable{
 
     @FXML
     void addMediaFileBtnAction(ActionEvent event) {
-        // System.out.println("clicked");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("選擇匯入圖片");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -103,7 +105,6 @@ public class MainSceneController implements Initializable{
                 new FileChooser.ExtensionFilter("圖片", getAllAvailableImageType()),
                 new FileChooser.ExtensionFilter("All Images", "*.*"));
         List<File> files = fileChooser.showOpenMultipleDialog(getCurrentStage());
-        // System.out.println(files);
         if(files!=null){
             for (File file : files) {
                 project.getPhotoFiles().addPhotoSource(file);
@@ -146,43 +147,50 @@ public class MainSceneController implements Initializable{
 
     void updateWorkCanvas(){
         workingPane.setContent(workingCanvas);
-        
+        modeChoiceBox.setValue("畫筆");
+        changeWorkMode(null);
         workingCanvas.setOnMouseReleased((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                GraphicsContext gc = workingCanvas.getGraphicsContext2D();
-                gc.fillOval(event.getX(), event.getY(), 10, 10);
                 updateElementTable();
             }
         });
     }
 
     void paintMode(){
-        workingCanvas.setOnMouseClicked((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                GraphicsContext gc = workingCanvas.getGraphicsContext2D();
-                gc.fillOval(event.getX(), event.getY(), 10, 10);
-                gc.restore();
-            }
-        });
-        workingCanvas.setOnMouseDragged((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                GraphicsContext gc = workingCanvas.getGraphicsContext2D();
-                gc.fillOval(event.getX(), event.getY(), 10, 10);
-                gc.restore();
-            }
-        });
+        colorPicker.setDisable(false);
+        sliderLabel.setText("粗細:");
+        slider.setMin(0);
+        slider.setMax(128);
+        slider.setValue(8);
+        slider.setMajorTickUnit(8);
+        slider.setMinorTickCount(2);
+        slider.setBlockIncrement(4);
+        workingCanvas.setOnMouseClicked(this::paintHandler);
+        workingCanvas.setOnMouseDragged(this::paintHandler);
+    }
+
+    public void paintHandler(MouseEvent event){
+        GraphicsContext gc = workingCanvas.getGraphicsContext2D();
+        gc.setFill(colorPicker.getValue());
+        gc.fillOval(event.getX()-slider.getValue()/2, event.getY()-slider.getValue() / 2, slider.getValue(), slider.getValue());
+        gc.restore();
     }
 
     void removeBackgroundMode(){
+        colorPicker.setDisable(true);
+        sliderLabel.setText("差異度:");
+        slider.setMin(0);
+        slider.setMax(1);
+        slider.setValue(0.1);
+        slider.setMajorTickUnit(0.1);
+        slider.setMinorTickCount(2);
+        slider.setBlockIncrement(0.05);
         workingCanvas.setOnMouseClicked((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 GraphicsContext gc = workingCanvas.getGraphicsContext2D();
-                gc=DrawingTools.removeBackground(gc,(int)event.getX(), (int)event.getY(), 0.1);
-
+                gc=DrawingTools.removeBackground(gc,(int)event.getX(), (int)event.getY(), slider.getValue());
             }
         });
         workingCanvas.setOnMouseDragged(null);

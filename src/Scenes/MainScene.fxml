@@ -80,7 +80,7 @@
                   <FlowPane fx:id="mediaPane" onDragDropped="#addMediaFile" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
-            <SplitPane orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
               <items>
                   <SplitPane dividerPositions="0.69875" prefHeight="160.0" prefWidth="783.0">
                     <items>
@@ -88,18 +88,18 @@
                            <center>
                               <ScrollPane fx:id="workingPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="557.0" style="-fx-background: pink;" BorderPane.alignment="CENTER">
                                  <content>
-                                    <Canvas fx:id="workingCanvas" height="300.0" onMouseClicked="#drawAction" onMouseDragged="#drawAction" width="400.0" />
+                                    <Canvas fx:id="workingCanvas" height="300.0" width="400.0" />
                                  </content>
                               </ScrollPane>
                            </center>
                            <top>
-                              <FlowPane prefHeight="27.0" prefWidth="398.0" BorderPane.alignment="CENTER">
+                              <FlowPane hgap="5.0" prefHeight="27.0" prefWidth="398.0" BorderPane.alignment="CENTER">
                                  <children>
                                     <Label text="繪圖區" />
-                                    <ChoiceBox fx:id="modeChoiceBox" prefHeight="23.0" prefWidth="99.0" />
-                                    <ColorPicker fx:id="colorPicker" />
-                                    <Label text="粗細" />
-                                    <Slider />
+                                    <ChoiceBox fx:id="modeChoiceBox" prefHeight="23.0" prefWidth="128.0" />
+                                    <ColorPicker fx:id="colorPicker" prefHeight="23.0" prefWidth="79.0" />
+                                    <Label fx:id="sliderLabel" text="粗細" />
+                                    <Slider fx:id="slider" />
                                  </children>
                               </FlowPane>
                            </top>
