@@ -86,7 +86,7 @@
                     <items>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <center>
-                              <ScrollPane fx:id="workingPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="557.0" style="-fx-background: pink;" BorderPane.alignment="CENTER">
+                              <ScrollPane fx:id="workingPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="557.0" stylesheets="@style.css" BorderPane.alignment="CENTER">
                                  <content>
                                     <Canvas fx:id="workingCanvas" height="300.0" width="400.0" />
                                  </content>
