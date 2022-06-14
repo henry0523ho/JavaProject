@@ -42,11 +42,11 @@ public class DrawingTools {
     }
     public static double colorDistance(Color a,Color b){
         double dist=0;
-        dist+=Math.sqrt((a.getOpacity()-b.getOpacity())*(a.getOpacity()-b.getOpacity()));
+        // dist+=Math.sqrt((a.getOpacity()-b.getOpacity())*(a.getOpacity()-b.getOpacity()));
         dist+=Math.sqrt((a.getRed()-b.getRed())*(a.getRed() - b.getRed()));
         dist+=Math.sqrt((a.getGreen()-b.getGreen())*(a.getGreen() - b.getGreen()));
         dist+=Math.sqrt((a.getBlue()-b.getBlue())*(a.getBlue() - b.getBlue()));
-        return dist;
+        return dist/3;
     }
 
     public static GraphicsContext addLayer(GraphicsContext origin,GraphicsContext addition){

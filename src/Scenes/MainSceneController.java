@@ -213,6 +213,7 @@ public class MainSceneController implements Initializable{
             public void handle(MouseEvent event) {
                 GraphicsContext gc = workingCanvas.getGraphicsContext2D();
                 gc=DrawingTools.removeBackground(gc,(int)event.getX(), (int)event.getY(), slider.getValue());
+                updateElementTable();
             }
         });
         workingCanvas.setOnMouseDragged(null);
