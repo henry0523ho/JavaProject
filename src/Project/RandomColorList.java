@@ -9,6 +9,10 @@ public class RandomColorList {
         colorList = new ArrayList<RandomColor>();
     }
 
+    public ArrayList<RandomColor> getColorList(){
+        return colorList;
+    }
+
     public void setDefaultColorPossibility(){
         double averagePossibility=1.0f/colorList.size();
         for(RandomColor color : colorList){

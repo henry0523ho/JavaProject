@@ -2,12 +2,14 @@ package Scenes;
 
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
 import Project.PhotoElement;
 import javafx.embed.swing.SwingFXUtils;
-
+import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -17,8 +19,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
@@ -148,4 +154,33 @@ public class DrawingTools {
         return btn;
     }
 
+    // public static Pane generatePreview(double width,double height,Color backgroundColor,ArrayList<PhotoElement> list){
+    //     Pane ret= new Pane();
+    //     ret.setMinSize(width,height);
+    //     ret.setPrefSize(width,height);
+    //     ret.setMaxSize(width,height);
+    //     for(PhotoElement pe:list){
+    //         Canvas c=scaleCanvas(pe.getPixels(),pe.getWidth(),pe.getHeight());
+    //         ret.getChildren().add(c);
+    //         c.setLayoutX(pe.getPosX());
+    //         c.setLayoutY(pe.getPosY());
+    //     }
+    //     ret.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
+    //     return ret;
+    // }
+
+    public static Canvas generatePreview(double width,double height,Color backgroundColor,ArrayList<PhotoElement> list){
+        Canvas ret = new Canvas(width,height);
+        GraphicsContext gc =ret.getGraphicsContext2D();
+        gc.setFill(backgroundColor);
+        for(PhotoElement pe:list){
+            Canvas c=pe.getPixels();
+            SnapshotParameters params = new SnapshotParameters();
+            params.setFill(Color.TRANSPARENT);
+            WritableImage image = c.snapshot(params, null);
+            ret.getGraphicsContext2D().drawImage(image, pe.getPosX(), pe.getPosY(),pe.getWidth(),pe.getWidth());
+        }
+
+        return ret;
+    }
 }

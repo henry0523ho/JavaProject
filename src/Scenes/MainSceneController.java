@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -27,8 +28,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
@@ -39,6 +42,8 @@ import javafx.scene.control.ButtonBar.ButtonData;
 
 public class MainSceneController implements Initializable{
     final Project project;
+    int photoElementTypeId;
+    int photoElementId;
 
     public MainSceneController() {
         int projectWidth;
@@ -106,8 +111,18 @@ public class MainSceneController implements Initializable{
     }
     @FXML
     void saveBtnAction(ActionEvent event) {
-        workingCanvas=DrawingTools.scaleCanvas(workingCanvas,90,(90/workingCanvas.getWidth())*workingCanvas.getHeight());
-        updateWorkCanvas();
+        
+        ArrayList<PhotoElement> list = new ArrayList<PhotoElement>();
+        for(PhotoElement pe:project.getPhotoElementTypes().get(0).getPhotoElements()){
+            list.add(pe);
+        }
+        Canvas c=DrawingTools.generatePreview((double)project.getWidth(),(double)project.getHeight(),project.getBackgroundColorList().getColorList().get(0).getColor(), list);
+        Pane p= new Pane();
+        p.getChildren().add(c);
+        Stage stage = new Stage();
+        stage.setTitle("My New Stage Title");
+        stage.setScene(new Scene(p, 450, 450));
+        stage.show();
     }
 
     @FXML
@@ -155,19 +170,17 @@ public class MainSceneController implements Initializable{
                     PhotoElement pe=DrawingTools.fileToPhotoElement(file);
                     project.getPhotoElementTypes().get(0).addPhotoElement(pe);
                     updateElementTable();
-                    toWorkCanvas(pe);
+                    photoElementTypeId=0;
+                    photoElementId=project.getPhotoElementTypes().get(0).getPhotoElements().size()-1;
+                    updateWorkCanvas();
                 }
             });
         }
     }
 
-    void toWorkCanvas(PhotoElement pe){
-        workingCanvas=pe.getPixels();
-        updateWorkCanvas();
-    }
-
     void updateWorkCanvas(){
         updateSetSize();
+        workingCanvas=project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPixels();
         workingPane.setContent(workingCanvas);
         modeChoiceBox.setValue("畫筆");
         changeWorkMode(null);
@@ -247,7 +260,6 @@ public class MainSceneController implements Initializable{
                     public void handle(ActionEvent event) {
                         photoElementId=peID;
                         photoElementTypeId=petID;
-                        toWorkCanvas(pe);
                         updateWorkCanvas();
                         
                     }
@@ -267,8 +279,7 @@ public class MainSceneController implements Initializable{
 
         dialog.showAndWait();
     }
-    int photoElementTypeId;
-    int photoElementId;
+    
     public void setSize(KeyEvent event) {
         //System.out.printf("%s\n",setHeigth.getText());
         if(event.getCode().equals(KeyCode.ENTER))
