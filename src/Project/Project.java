@@ -82,5 +82,16 @@ public class Project {
     public void delPhotoElement(int petId,int peId){
         photoElementTypes.get(petId).getPhotoElements().remove(peId);
     }
+    public int findPhotoElementType(String tagName)
+    {
+        for(int i=0;i<photoElementTypes.size();i++)
+        {
+            if(photoElementTypes.get(i).equals(tagName))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 
 }

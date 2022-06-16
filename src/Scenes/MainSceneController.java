@@ -139,8 +139,8 @@ public class MainSceneController implements Initializable{
         setPossibility.setOnKeyPressed(this::baseSetting);
         setName.setOnKeyPressed(this::setName);
         addNewTag.setOnKeyPressed(this::setNewTag);
-        //tagComboBox.setOnAction(this::selectTag);
         tagComboBox.setItems(tag);
+        tagComboBox.setOnAction(this::selectTag);
         // workingPane.setBackground(new Background(new BackgroundImage(new Image("shark.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
     }
  
@@ -312,7 +312,6 @@ public class MainSceneController implements Initializable{
 
     void updateWorkCanvas(){
         updateBaseSetting();
-        updateTag();
         if(photoElementTypeId!=-1&&photoElementId!=-1){
             workingCanvas=project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPixels();
         }else{
@@ -421,6 +420,7 @@ public class MainSceneController implements Initializable{
                                     }
                                     updateWorkCanvas();
                                     updateElementTable();
+                                    updateTag();
                                 }
                             });
                             btn.setContextMenu(contextMenu);
@@ -449,6 +449,7 @@ public class MainSceneController implements Initializable{
         if(event.getCode().equals(KeyCode.ENTER)&&photoElementId!=-1&&photoElementTypeId!=-1){
             try {
                 project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setName(setName.getText());
+                updateElementTable();
 
             }
             catch (Exception e) {
@@ -501,7 +502,11 @@ public class MainSceneController implements Initializable{
     {
         if(event.getCode().equals(KeyCode.ENTER)&&photoElementId!=-1&&photoElementTypeId!=-1){
             try {
-                tag.add(addNewTag.getText());
+                if(addNewTag.getText()!="")
+                {
+                    tag.add(addNewTag.getText());
+                    addNewTag.setText("");
+                }
             }
             catch (Exception e) {
                 System.out.println(e);;
@@ -509,17 +514,32 @@ public class MainSceneController implements Initializable{
             }
         }
     }
-    public void setTag(){
-        String tagName=tagComboBox.getValue().toString();
-        //project.getPhotoElementTypes().get(photoElementTypeId).setTypeName(tagName);
+    public void selectTag(ActionEvent event){
+        String tagName = tagComboBox.getSelectionModel().getSelectedItem();
+        System.out.println(tagName);
+        setTag(tagName);
+        updateElementTable();
+    }
+    public void setTag(String tagName){
         PhotoElement pe= project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId);
-        
-        System.out.printf("%s\n",project.getPhotoElementTypes().get(photoElementTypeId).getTypeName());
+        int tagIndex=project.findPhotoElementType(tagName);
+        if(tagIndex==-1)
+        {
+            project.addPhotoElementType(tagName);
+            project.getPhotoElementTypes().get(project.getPhotoElementTypes().size()-1).addPhotoElement(pe);
+            project.delPhotoElement(photoElementTypeId, photoElementId);
+        }
+        else
+        {
+            project.getPhotoElementTypes().get(tagIndex).addPhotoElement(pe);
+            project.delPhotoElement(photoElementTypeId, photoElementId);
+            System.out.printf("%s\n",project.getPhotoElementTypes().get(tagIndex).getTypeName());
+        }
     }
     public void updateTag()
     {
         tagComboBox.setValue(project.getPhotoElementTypes().get(photoElementTypeId).getTypeName());
+        //tagComboBox.getSelectionModel().select(photoElementTypeId);
     }
-
 
 }
