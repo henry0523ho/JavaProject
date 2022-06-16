@@ -118,7 +118,14 @@ public class MainSceneController implements Initializable{
 
     @FXML
     void newCanvasBtnAction(ActionEvent event) {
-
+        PhotoElement pe=new PhotoElement(project.getWidth(), project.getHeight());
+        pe.getPixels().getGraphicsContext2D().setFill(Color.WHITE);
+        pe.getPixels().getGraphicsContext2D().fillRect(0,0,pe.getWidth(),pe.getHeight());
+        project.getPhotoElementTypes().get(0).addPhotoElement(pe);
+        photoElementId=project.getPhotoElementTypes().get(0).getPhotoElements().size()-1;
+        photoElementTypeId=0;
+        updateElementTable();
+        updateWorkCanvas();
     }
     @FXML
     void saveBtnAction(ActionEvent event) {
