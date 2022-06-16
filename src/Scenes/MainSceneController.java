@@ -207,6 +207,7 @@ public class MainSceneController implements Initializable{
     void initUI(){
         Stage stage = new Stage();
         GridPane gp = new GridPane();
+        gp.setGridLinesVisible(true);
         Label heightLabel=DrawingTools.generateInitUILabel("高:");
         Label widthLabel=DrawingTools.generateInitUILabel("寬:");
         Label bgColorLabel=DrawingTools.generateInitUILabel("背景顏色:");
@@ -217,26 +218,12 @@ public class MainSceneController implements Initializable{
                 double input;
                 try {
                     input = Double.parseDouble(heightTf.getText());
-                    project.setHeight((int) input);
                 } catch (Exception ex) {
                     showDialog();
                 }
             }
         });
         TextField widthTf=new TextField("400");
-        widthTf.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent e) {
-                double input;
-                try {
-                    if(e.getCode()==null);
-                    input = Double.parseDouble(widthTf.getText());
-                    project.setWidth((int) input);
-                } catch (Exception ex) {
-                    showDialog();
-                }
-            }
-        });
         ColorPicker colorPicker=new ColorPicker();
         Button addColor=new Button("+");
         Button submit=new Button("確定");
@@ -263,9 +250,40 @@ public class MainSceneController implements Initializable{
         gp.add(DrawingTools.generateInitUIBorderPane(null,null,null,null,widthTf),1,2);
         gp.add(DrawingTools.generateInitUIBorderPane(colorPane,null,null,null,colorCtrl),1,3);
         gp.add(DrawingTools.generateInitUIBorderPane(null,null,null,null,submit),1,4);
+        ArrayList<Color> bgColors=new ArrayList<Color>();
+        addColor.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                if(!DrawingTools.colorInList(colorPicker.getValue(),bgColors)){
+                    bgColors.add(colorPicker.getValue());
+                    colorPane.getChildren().clear();
+                    for(Color c:bgColors){
+                        Button btn=DrawingTools.generateColorButton(c);
+                        colorPane.getChildren().add(btn);
+                        // btn.setAlignment()
+
+                    }
+                }
+            }
+        });
+        submit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                if(Integer.parseInt(heightTf.getText())<=0){
+                    showDialog();
+                    return;
+                }
+                if(Integer.parseInt(widthTf.getText())<=0){
+                    showDialog();
+                    return;
+                }
+                project.setHeight(Integer.parseInt(heightTf.getText()));
+                project.setWidth(Integer.parseInt(widthTf.getText()));
+                stage.close();
+            }
+        });
         
-        
-        
+
         stage.setScene(new Scene(new BorderPane(gp,null,null,null,null), 600, 400));
         stage.setTitle("初始設定");
         stage.showAndWait();

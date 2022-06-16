@@ -201,4 +201,21 @@ public class DrawingTools {
         if(null!=right) BorderPane.setAlignment(right,Pos.CENTER);
         return ret;
     }
+
+    public static boolean colorInList(Color color,ArrayList<Color> list){
+        for(Color c:list){
+            if(c.equals(color)) return true;
+        }
+        return false;
+    }
+
+    public static Button generateColorButton(Color color){
+        Button ret = new Button();
+        Canvas c = new Canvas(24,24);
+        GraphicsContext gc =c.getGraphicsContext2D();
+        gc.setFill(color);
+        gc.fillOval(12,12,12,12);
+        ret.setGraphic(c);
+        return ret;
+    }
 }
