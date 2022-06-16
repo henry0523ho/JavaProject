@@ -27,6 +27,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -49,12 +50,16 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 
 public class MainSceneController implements Initializable{
     final Project project;
     int photoElementTypeId;
     int photoElementId;
-
+    ObservableList<String> tag = FXCollections.observableArrayList("預設");
     public MainSceneController() {
         int projectWidth;
         int projectHeight;
@@ -105,6 +110,12 @@ public class MainSceneController implements Initializable{
     private TextField setPossibility;
     @FXML
     private Button newCanvasBtn;
+    @FXML
+    private ComboBox<String> tagComboBox;
+    @FXML
+    private TextField setName;
+    @FXML
+    private TextField addNewTag;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -117,15 +128,18 @@ public class MainSceneController implements Initializable{
         colorPicker.setValue(Color.BLACK);
         slider.setShowTickLabels(true);
         slider.setShowTickMarks(true);
-        setHeigth.setOnKeyPressed(this::setSize);
-        setWidth.setOnKeyPressed(this::setSize);
-        setPosX.setOnKeyPressed(this::setSize);
-        setPosY.setOnKeyPressed(this::setSize);
-        setPossibility.setOnKeyPressed(this::setSize);
-        
+        setHeigth.setOnKeyPressed(this::baseSetting);
+        setWidth.setOnKeyPressed(this::baseSetting);
+        setPosX.setOnKeyPressed(this::baseSetting);
+        setPosY.setOnKeyPressed(this::baseSetting);
+        setPossibility.setOnKeyPressed(this::baseSetting);
+        setName.setOnKeyPressed(this::setName);
+        addNewTag.setOnKeyPressed(this::setNewTag);
+        //tagComboBox.setOnAction(this::selectTag);
+        tagComboBox.setItems(tag);
         // workingPane.setBackground(new Background(new BackgroundImage(new Image("shark.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
     }
-
+ 
     @FXML
     void newCanvasBtnAction(ActionEvent event) {
         PhotoElement pe=new PhotoElement(project.getWidth(), project.getHeight());
@@ -250,7 +264,8 @@ public class MainSceneController implements Initializable{
     }
 
     void updateWorkCanvas(){
-        updateSetSize();
+        updateBaseSetting();
+        updateTag();
         if(photoElementTypeId!=-1&&photoElementId!=-1){
             workingCanvas=project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPixels();
         }else{
@@ -382,8 +397,21 @@ public class MainSceneController implements Initializable{
 
         dialog.showAndWait();
     }
-    
-    public void setSize(KeyEvent event) {
+    public void setName(KeyEvent event) {
+        //System.out.printf("%s\n",setHeigth.getText());
+        if(event.getCode().equals(KeyCode.ENTER)&&photoElementId!=-1&&photoElementTypeId!=-1){
+            try {
+                project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setName(setName.getText());
+
+            }
+            catch (Exception e) {
+                System.out.println(e);;
+                showDialog();
+            }
+        }
+        
+    }
+    public void baseSetting(KeyEvent event) {
         //System.out.printf("%s\n",setHeigth.getText());
         if(event.getCode().equals(KeyCode.ENTER)&&photoElementId!=-1&&photoElementTypeId!=-1){
             try {
@@ -400,14 +428,13 @@ public class MainSceneController implements Initializable{
                 showDialog();
             } 
             catch (Exception e) {
-                //TODO: handle exception
                 System.out.println(e);;
                 showDialog();
             }
         }
         
     }
-    public void updateSetSize()
+    public void updateBaseSetting()
     {
         if(photoElementTypeId!=-1&&photoElementId!=-1){
             setHeigth.setText(String.format("%.2f", project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getHeight()));
@@ -415,12 +442,36 @@ public class MainSceneController implements Initializable{
             setPosX.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosX()));
             setPosY.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosY()));
             setPossibility.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPossibility()));
+            setName.setText(String.format("%s", project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getName()));
         }else{
             setHeigth.setText("");
             setWidth.setText("");
             setPosX.setText("");
             setPosY.setText("");
         }
+    }
+    public void setNewTag(KeyEvent event)
+    {
+        if(event.getCode().equals(KeyCode.ENTER)&&photoElementId!=-1&&photoElementTypeId!=-1){
+            try {
+                tag.add(addNewTag.getText());
+            }
+            catch (Exception e) {
+                System.out.println(e);;
+                showDialog();
+            }
+        }
+    }
+    public void setTag(){
+        String tagName=tagComboBox.getValue().toString();
+        //project.getPhotoElementTypes().get(photoElementTypeId).setTypeName(tagName);
+        PhotoElement pe= project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId);
+        
+        System.out.printf("%s\n",project.getPhotoElementTypes().get(photoElementTypeId).getTypeName());
+    }
+    public void updateTag()
+    {
+        tagComboBox.setValue(project.getPhotoElementTypes().get(photoElementTypeId).getTypeName());
     }
 
 
