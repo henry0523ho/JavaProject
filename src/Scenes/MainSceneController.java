@@ -125,6 +125,9 @@ public class MainSceneController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         
         initUI();
+        // System.out.printf("%d %d%n%s",project.getHeight(),project.getWidth(),project.getBackgroundColorList().get(0));
+        // Scenes.initUI newInitUI=new initUI();
+        // newInitUI.callInitUI();
 
         String[] workModes={"畫筆","去背"};
         modeChoiceBox.getItems().addAll(workModes);
@@ -228,7 +231,9 @@ public class MainSceneController implements Initializable{
         Button addColor=new Button("+");
         Button submit=new Button("確定");
         FlowPane colorPane=new FlowPane();
+        colorPane.setAlignment(Pos.CENTER);
         FlowPane colorCtrl=new FlowPane(colorPicker,addColor);
+        colorCtrl.setAlignment(Pos.CENTER);
         colorCtrl.setMinSize(125,42);
         colorCtrl.setMaxSize(125,42);
         colorCtrl.setPrefSize(125,42);
@@ -255,13 +260,13 @@ public class MainSceneController implements Initializable{
             @Override
             public void handle(ActionEvent arg0) {
                 if(!DrawingTools.colorInList(colorPicker.getValue(),bgColors)){
-                    bgColors.add(colorPicker.getValue());
                     colorPane.getChildren().clear();
+                    bgColors.add(colorPicker.getValue());
+                    // ArrayList<Button> btnList= new ArrayList<Button>();
                     for(Color c:bgColors){
                         Button btn=DrawingTools.generateColorButton(c);
+                        // btnList.add(btn);
                         colorPane.getChildren().add(btn);
-                        // btn.setAlignment()
-
                     }
                 }
             }
@@ -279,6 +284,9 @@ public class MainSceneController implements Initializable{
                 }
                 project.setHeight(Integer.parseInt(heightTf.getText()));
                 project.setWidth(Integer.parseInt(widthTf.getText()));
+                for(Color c:bgColors){
+                    project.addBackgroundColor(c);
+                }
                 stage.close();
             }
         });
@@ -289,7 +297,7 @@ public class MainSceneController implements Initializable{
         stage.showAndWait();
 
     }
-
+    
     void updateMediaPane() {
         mediaPane.getChildren().clear();
         for (File file : project.getPhotoFiles().getPhotoSources()) {

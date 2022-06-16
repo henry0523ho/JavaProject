@@ -9,6 +9,8 @@ import javax.swing.GroupLayout.Alignment;
 
 import Project.PhotoElement;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -25,6 +27,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -176,6 +179,7 @@ public class DrawingTools {
         Canvas ret = new Canvas(width,height);
         GraphicsContext gc =ret.getGraphicsContext2D();
         gc.setFill(backgroundColor);
+        gc.fillRect(0,0,width,height);
         for(PhotoElement pe:list){
             Canvas c=pe.getPixels();
             SnapshotParameters params = new SnapshotParameters();
@@ -214,8 +218,12 @@ public class DrawingTools {
         Canvas c = new Canvas(24,24);
         GraphicsContext gc =c.getGraphicsContext2D();
         gc.setFill(color);
-        gc.fillOval(12,12,12,12);
+        gc.fillOval(0,0,22,22);
+        gc.setFill(Color.BLACK);
+        gc.strokeOval(1,1,22,22);
         ret.setGraphic(c);
         return ret;
     }
+
+    
 }
