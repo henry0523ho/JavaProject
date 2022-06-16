@@ -1,20 +1,26 @@
 package Scenes;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
 import Project.PhotoElement;
 import Project.PhotoElementType;
 import Project.Project;
+
+import javafx.fxml.FXMLLoader;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -28,6 +34,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -101,6 +108,9 @@ public class MainSceneController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        
+        initUI();
+
         String[] workModes={"畫筆","去背"};
         modeChoiceBox.getItems().addAll(workModes);
         modeChoiceBox.setOnAction(this::changeWorkMode);
@@ -174,6 +184,49 @@ public class MainSceneController implements Initializable{
         }else if(currentMode=="去背"){
             removeBackgroundMode();
         }
+    }
+
+    void initUI(){
+        @FunctionalInterface
+        interface Function6<One, Two, Three, Four, Five, Six> {
+            public Six apply(One one, Two two, Three three, Four four, Five five);
+        }
+    
+        Function6<Node,Node,Node,Node,Node,BorderPane> generateBorderPane= (center,top,right,bottom,left)->{
+            BorderPane bp=new BorderPane(center,top,right,bottom,left);
+            bp.setPrefSize(200,80);
+            return bp;
+        };
+        Stage stage = new Stage();
+        GridPane gp = new GridPane();
+        gp.setGridLinesVisible(true);
+        Label heightLabel=new Label("高:");
+        Label widthLabel=new Label("寬:");
+        Label bgColorLabel=new Label("背景顏色:");
+        TextField heightTf=new TextField("300");
+        TextField widthTf=new TextField("400");
+        ColorPicker colorPicker=new ColorPicker();
+        Button addColor=new Button("+");
+        Button submit=new Button("確定");
+        FlowPane colorPane=new FlowPane();
+        FlowPane colorCtrl=new FlowPane(colorPicker,addColor);
+
+
+
+        gp.add(new BorderPane(null,null,heightLabel,null,null),0,1);
+        gp.add(new BorderPane(null,null,widthLabel,null,null),0,2);
+        gp.add(new BorderPane(null,null,bgColorLabel,null,null),0,3);
+        gp.add(new BorderPane(null,null,null,null,heightTf),1,1);
+        gp.add(new BorderPane(null,null,null,null,widthTf),1,2);
+        gp.add(new BorderPane(colorCtrl,null,null,null,colorPane),1,3);
+        gp.add(new BorderPane(null,null,null,null,submit),1,4);
+        
+        
+        
+        stage.setScene(new Scene(new BorderPane(gp,null,null,null,null), 600, 400));
+        stage.setTitle("初始設定");
+        stage.showAndWait();
+
     }
 
     void updateMediaPane() {

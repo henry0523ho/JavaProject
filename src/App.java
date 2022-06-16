@@ -12,12 +12,14 @@ public class App extends Application {
         Parent root;
         try {
             root = FXMLLoader.load(getClass().getResource("Scenes/MainScene.fxml"));
+            // root= FXMLLoader.load(getClass().getResource("Scenes/initUI.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setTitle("NFT圖片自動生成程式");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
             System.out.println("ERROR");
+            System.out.println(e);
         }
     }
 
