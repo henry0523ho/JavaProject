@@ -290,9 +290,13 @@ public class MainSceneController implements Initializable{
                             deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
-                                    project.delPhotoElement(photoElementTypeId,photoElementId);
-                                    photoElementTypeId=-1;
-                                    photoElementId=-1;
+                                    project.delPhotoElement(petID,peID);
+                                    if(petID==photoElementTypeId&&peID==photoElementId){
+                                        photoElementTypeId=-1;
+                                        photoElementId=-1;
+                                    }else if(petID==photoElementTypeId&&peID<photoElementId){
+                                        photoElementId-=1;
+                                    }
                                     updateWorkCanvas();
                                     updateElementTable();
                                 }
