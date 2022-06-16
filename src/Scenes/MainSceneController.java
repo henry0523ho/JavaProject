@@ -21,7 +21,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -36,6 +38,7 @@ import javafx.stage.Window;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -93,6 +96,9 @@ public class MainSceneController implements Initializable{
     private TextField setPosY;
     @FXML
     private TextField setPossibility;
+    @FXML
+    private Button newCanvasBtn;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         String[] workModes={"畫筆","去背"};
@@ -108,6 +114,11 @@ public class MainSceneController implements Initializable{
         setPossibility.setOnKeyPressed(this::setSize);
         
         // workingPane.setBackground(new Background(new BackgroundImage(new Image("shark.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+    }
+
+    @FXML
+    void newCanvasBtnAction(ActionEvent event) {
+
     }
     @FXML
     void saveBtnAction(ActionEvent event) {
@@ -180,7 +191,11 @@ public class MainSceneController implements Initializable{
 
     void updateWorkCanvas(){
         updateSetSize();
-        workingCanvas=project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPixels();
+        if(photoElementTypeId!=-1&&photoElementId!=-1){
+            workingCanvas=project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPixels();
+        }else{
+            workingCanvas=new Canvas(0,0);
+        }
         workingPane.setContent(workingCanvas);
         modeChoiceBox.setValue("畫筆");
         changeWorkMode(null);
@@ -264,6 +279,30 @@ public class MainSceneController implements Initializable{
                         
                     }
                 });
+                btn.setOnMouseClicked((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent e) {
+                        if(e.getButton()==MouseButton.SECONDARY){
+                            ContextMenu contextMenu = new ContextMenu();
+                            MenuItem deleteBtn = new MenuItem("刪除");
+                            contextMenu.getItems().add(deleteBtn);
+                            deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    project.delPhotoElement(photoElementTypeId,photoElementId);
+                                    photoElementTypeId=-1;
+                                    photoElementId=-1;
+                                    updateWorkCanvas();
+                                    updateElementTable();
+                                }
+                            });
+                            btn.setContextMenu(contextMenu);
+                        }
+                        
+                    }
+                    
+                });
             }
         }
         elementPane.setContent(elementTable);
@@ -282,10 +321,8 @@ public class MainSceneController implements Initializable{
     
     public void setSize(KeyEvent event) {
         //System.out.printf("%s\n",setHeigth.getText());
-        if(event.getCode().equals(KeyCode.ENTER))
-        {
-            try 
-            {
+        if(event.getCode().equals(KeyCode.ENTER)&&photoElementId!=-1&&photoElementTypeId!=-1){
+            try {
                 project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setHeight(Double.parseDouble(setHeigth.getText()));
                 project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setWidth(Double.parseDouble(setWidth.getText()));
                 project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setPosX(Double.parseDouble(setPosX.getText()));
@@ -308,11 +345,18 @@ public class MainSceneController implements Initializable{
     }
     public void updateSetSize()
     {
-        setHeigth.setText(String.format("%.2f", project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getHeight()));
-        setWidth.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getWidth()));
-        setPosX.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosX()));
-        setPosY.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosY()));
-        setPossibility.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPossibility()));
+        if(photoElementTypeId!=-1&&photoElementId!=-1){
+            setHeigth.setText(String.format("%.2f", project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getHeight()));
+            setWidth.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getWidth()));
+            setPosX.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosX()));
+            setPosY.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosY()));
+            setPossibility.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPossibility()));
+        }else{
+            setHeigth.setText("");
+            setWidth.setText("");
+            setPosX.setText("");
+            setPosY.setText("");
+        }
     }
 
 

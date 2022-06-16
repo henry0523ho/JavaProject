@@ -65,24 +65,25 @@
             </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.10579064587973273" prefHeight="950.0" prefWidth="900.0">
+      <SplitPane dividerPositions="0.13824577025823687" prefHeight="950.0" prefWidth="900.0">
         <items>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <top>
                   <FlowPane prefHeight="16.0" prefWidth="92.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Label prefHeight="15.0" prefWidth="54.0" text="媒體櫃" />
-                        <Button fx:id="addMediaFileBtn" mnemonicParsing="false" onAction="#addMediaFileBtnAction" prefHeight="23.0" prefWidth="34.0" text="+" />
+                        <Label prefHeight="15.0" prefWidth="37.0" text="媒體櫃" />
+                        <Button fx:id="addMediaFileBtn" mnemonicParsing="false" onAction="#addMediaFileBtnAction" prefHeight="23.0" prefWidth="25.0" text="+" />
+                        <Button fx:id="newCanvasBtn" mnemonicParsing="false" onAction="#newCanvasBtnAction" prefHeight="23.0" prefWidth="33.0" text="📄" textFill="WHITE" />
                      </children>
                   </FlowPane>
                </top>
                <center>
-                  <FlowPane fx:id="mediaPane" onDragDropped="#addMediaFile" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                  <FlowPane fx:id="mediaPane" onDragDropped="#addMediaFile" prefHeight="535.0" prefWidth="102.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
-            <SplitPane dividerPositions="0.8028673835125448" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+            <SplitPane dividerPositions="0.8028673835125448" orientation="VERTICAL" prefHeight="558.0" prefWidth="759.0">
               <items>
-                  <SplitPane dividerPositions="0.69875" prefHeight="160.0" prefWidth="783.0">
+                  <SplitPane dividerPositions="0.69875" prefHeight="446.0" prefWidth="780.0">
                     <items>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <center>

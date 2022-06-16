@@ -79,5 +79,8 @@ public class Project {
         GraphicsContext gc=canvas.getGraphicsContext2D();
         
     }
+    public void delPhotoElement(int petId,int peId){
+        photoElementTypes.get(petId).getPhotoElements().remove(peId);
+    }
 
 }
