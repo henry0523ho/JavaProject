@@ -5,10 +5,12 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.GroupLayout.Alignment;
 
 import Project.PhotoElement;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
@@ -26,6 +28,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Scale;
@@ -181,6 +184,21 @@ public class DrawingTools {
             ret.getGraphicsContext2D().drawImage(image, pe.getPosX(), pe.getPosY(),pe.getWidth(),pe.getWidth());
         }
 
+        return ret;
+    }
+    public static Label generateInitUILabel(String s){
+        Label ret = new Label(s);
+        ret.setFont(new Font("Arial", 32));
+        ret.setTextAlignment(TextAlignment.RIGHT);
+        return ret;
+    }
+    public static BorderPane generateInitUIBorderPane(Node center, Node top, Node right, Node bottom, Node left){
+        BorderPane ret = new BorderPane(center, top, right, bottom, left);
+        if(null!=center) BorderPane.setAlignment(center,Pos.CENTER);
+        if(null!=top) BorderPane.setAlignment(top,Pos.CENTER);
+        if(null!=bottom) BorderPane.setAlignment(bottom,Pos.CENTER);
+        if(null!=left) BorderPane.setAlignment(left,Pos.CENTER);
+        if(null!=right) BorderPane.setAlignment(right,Pos.CENTER);
         return ret;
     }
 }

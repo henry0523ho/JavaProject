@@ -20,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -35,10 +36,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -187,39 +191,64 @@ public class MainSceneController implements Initializable{
     }
 
     void initUI(){
-        @FunctionalInterface
-        interface Function6<One, Two, Three, Four, Five, Six> {
-            public Six apply(One one, Two two, Three three, Four four, Five five);
-        }
-    
-        Function6<Node,Node,Node,Node,Node,BorderPane> generateBorderPane= (center,top,right,bottom,left)->{
-            BorderPane bp=new BorderPane(center,top,right,bottom,left);
-            bp.setPrefSize(200,80);
-            return bp;
-        };
         Stage stage = new Stage();
         GridPane gp = new GridPane();
-        gp.setGridLinesVisible(true);
-        Label heightLabel=new Label("高:");
-        Label widthLabel=new Label("寬:");
-        Label bgColorLabel=new Label("背景顏色:");
+        Label heightLabel=DrawingTools.generateInitUILabel("高:");
+        Label widthLabel=DrawingTools.generateInitUILabel("寬:");
+        Label bgColorLabel=DrawingTools.generateInitUILabel("背景顏色:");
         TextField heightTf=new TextField("300");
+        heightTf.setOnKeyPressed(new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent e) {
+                double input;
+                try {
+                    input = Double.parseDouble(heightTf.getText());
+                    project.setHeight((int) input);
+                } catch (Exception ex) {
+                    showDialog();
+                }
+            }
+        });
         TextField widthTf=new TextField("400");
+        widthTf.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent e) {
+                double input;
+                try {
+                    if(e.getCode()==null);
+                    input = Double.parseDouble(widthTf.getText());
+                    project.setWidth((int) input);
+                } catch (Exception ex) {
+                    showDialog();
+                }
+            }
+        });
         ColorPicker colorPicker=new ColorPicker();
         Button addColor=new Button("+");
         Button submit=new Button("確定");
         FlowPane colorPane=new FlowPane();
         FlowPane colorCtrl=new FlowPane(colorPicker,addColor);
-
-
-
-        gp.add(new BorderPane(null,null,heightLabel,null,null),0,1);
-        gp.add(new BorderPane(null,null,widthLabel,null,null),0,2);
-        gp.add(new BorderPane(null,null,bgColorLabel,null,null),0,3);
-        gp.add(new BorderPane(null,null,null,null,heightTf),1,1);
-        gp.add(new BorderPane(null,null,null,null,widthTf),1,2);
-        gp.add(new BorderPane(colorCtrl,null,null,null,colorPane),1,3);
-        gp.add(new BorderPane(null,null,null,null,submit),1,4);
+        colorCtrl.setMinSize(125,42);
+        colorCtrl.setMaxSize(125,42);
+        colorCtrl.setPrefSize(125,42);
+        BorderPane.setAlignment(colorCtrl,Pos.CENTER);
+        ColumnConstraints col0=new ColumnConstraints();
+        ColumnConstraints col1=new ColumnConstraints();
+        col0.setPercentWidth(25);
+        col1.setPercentWidth(75);
+        gp.getColumnConstraints().addAll(col0,col1);
+        RowConstraints row0=new RowConstraints();
+        RowConstraints row1=new RowConstraints();
+        row0.setPercentHeight(20);
+        row1.setPercentHeight(10);
+        gp.getRowConstraints().addAll(row1,row0,row0,row0,row0,row1);
+        gp.add(DrawingTools.generateInitUIBorderPane(null,null,heightLabel,null,null),0,1);
+        gp.add(DrawingTools.generateInitUIBorderPane(null,null,widthLabel,null,null),0,2);
+        gp.add(DrawingTools.generateInitUIBorderPane(null,null,bgColorLabel,null,null),0,3);
+        gp.add(DrawingTools.generateInitUIBorderPane(null,null,null,null,heightTf),1,1);
+        gp.add(DrawingTools.generateInitUIBorderPane(null,null,null,null,widthTf),1,2);
+        gp.add(DrawingTools.generateInitUIBorderPane(colorPane,null,null,null,colorCtrl),1,3);
+        gp.add(DrawingTools.generateInitUIBorderPane(null,null,null,null,submit),1,4);
         
         
         
