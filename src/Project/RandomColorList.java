@@ -1,6 +1,9 @@
 package Project;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
+
+import javafx.scene.paint.Color;
 
 public class RandomColorList {
     private ArrayList<RandomColor> colorList;
@@ -50,5 +53,16 @@ public class RandomColorList {
             }
         }
         return -1;
+    }
+
+    public Color dealOneBgColor(){
+        SecureRandom secureRandom = new SecureRandom();
+        double rand=secureRandom.nextDouble();
+        double cur=0.0f;
+        for(int i=0;i<colorList.size();++i){
+            cur+=colorList.get(i).getPossibility();
+            if(rand<cur) return colorList.get(i-1).getColor();
+        }
+        return Color.TRANSPARENT;
     }
 }

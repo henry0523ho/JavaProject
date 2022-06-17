@@ -3,6 +3,7 @@ package Project;
 import java.io.File;
 import java.util.ArrayList;
 
+import Scenes.DrawingTools;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -118,5 +119,51 @@ public class Project {
             ret[i]=photoElementTypes.get(i).getTypeName();
         }
         return ret;
+    }
+
+    public ArrayList<PhotoElementType> checkOutputPossibility(){
+        ArrayList<PhotoElementType> ret=new ArrayList<PhotoElementType>();
+        for(PhotoElementType pe : photoElementTypes){
+            if(pe.checkPossibility()){
+                ret.add(pe);
+            }
+        }
+        return ret;
+    }
+
+    public void output(int N,String dirPath){
+        for(int i=1;i<=N;++i){
+            String destination=String.format("%s\\%d%s",dirPath,i,".png");
+            System.out.println(destination);
+            Canvas c=makeOnePhoto();
+            DrawingTools.saveCanvas(c,destination);
+        }
+    }
+
+    public Canvas makeOnePhoto(){
+        ArrayList<PhotoElement> list = new ArrayList<PhotoElement>();
+        for(PhotoElementType pet:photoElementTypes){
+            PhotoElement pe=pet.dealOnePhotoElement();
+            if(pe!=null){
+                list.add(pe);
+            }
+        }
+        Color bgColor=backgroundColorList.dealOneBgColor();
+        return DrawingTools.generatePreview(width, height, bgColor, list);
+    }
+    public Canvas previewPhoto(int petId,int peId){
+        ArrayList<PhotoElement> list = new ArrayList<PhotoElement>();
+        for(int i=0;i<photoElementTypes.size();++i){
+            if(i==petId){
+                list.add(photoElementTypes.get(i).getPhotoElements().get(peId));
+            }else{
+                PhotoElementType pet=photoElementTypes.get(i);
+                if(pet.getPhotoElements().size()>0){
+                    list.add(pet.getPhotoElements().get(0));
+                }
+            }
+        }
+        Color bgColor = backgroundColorList.dealOneBgColor();
+        return DrawingTools.generatePreview(width, height, bgColor, list);
     }
 }

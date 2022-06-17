@@ -39,4 +39,21 @@ public class PhotoElementType {
         }
         return photoElements.get(photoElements.size()-1);
     }
+    public PhotoElement dealOnePhotoElement(){
+        SecureRandom secureRandom=new SecureRandom();
+        for(PhotoElement pe:photoElements){
+            double rand=secureRandom.nextDouble();
+            if(rand<pe.getPossibility()){
+                return pe;
+            }
+        }
+        return null;
+    }
+    public boolean checkPossibility(){
+        double sum=0;
+        for(PhotoElement pe:photoElements){
+            sum+=pe.getPossibility();
+        }
+        return sum<0||1<sum;
+    }
 }

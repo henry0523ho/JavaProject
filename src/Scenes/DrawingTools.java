@@ -187,7 +187,6 @@ public class DrawingTools {
             WritableImage image = c.snapshot(params, null);
             ret.getGraphicsContext2D().drawImage(image, pe.getPosX(), pe.getPosY(),pe.getWidth(),pe.getWidth());
         }
-
         return ret;
     }
     public static Label generateInitUILabel(String s){

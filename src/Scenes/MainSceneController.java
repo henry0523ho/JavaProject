@@ -44,6 +44,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -142,27 +143,23 @@ public class MainSceneController implements Initializable{
         PhotoElement pe=new PhotoElement(project.getWidth(), project.getHeight());
         pe.getPixels().getGraphicsContext2D().setFill(Color.WHITE);
         pe.getPixels().getGraphicsContext2D().fillRect(0,0,pe.getWidth(),pe.getHeight());
-        project.getPhotoElementTypes().get(0).addPhotoElement(pe);
-        photoElementId=project.getPhotoElementTypes().get(0).getPhotoElements().size()-1;
         photoElementTypeId=0;
+        photoElementId= project.defaultAddPhotoElement(pe);
         updateElementTable();
         updateWorkCanvas();
     }
     @FXML
     void saveBtnAction(ActionEvent event) {
         
-        // ArrayList<PhotoElement> list = new ArrayList<PhotoElement>();
-        // for(PhotoElement pe:project.getPhotoElementTypes().get(0).getPhotoElements()){
-        //     list.add(pe);
-        // }
-        // Canvas c=DrawingTools.generatePreview((double)project.getWidth(),(double)project.getHeight(),project.getBackgroundColorList().getColorList().get(0).getColor(), list);
-        // Pane p= new Pane();
-        // p.getChildren().add(c);
-        // Stage stage = new Stage();
-        // stage.setTitle("My New Stage Title");
-        // stage.setScene(new Scene(p, 450, 450));
-        // stage.show();
-        project.printAll();
+        
+        Canvas c=project.previewPhoto(photoElementTypeId, photoElementId);
+        Pane p= new Pane();
+        p.getChildren().add(c);
+        Stage stage = new Stage();
+        stage.setTitle("My New Stage Title");
+        stage.setScene(new Scene(p, project.getWidth(), project.getHeight()));
+        stage.show();
+        
     }
 
     @FXML
@@ -201,7 +198,7 @@ public class MainSceneController implements Initializable{
     void initUI(){
         Stage stage = new Stage();
         GridPane gp = new GridPane();
-        gp.setGridLinesVisible(true);
+        // gp.setGridLinesVisible(true);
         Label heightLabel=DrawingTools.generateInitUILabel("高:");
         Label widthLabel=DrawingTools.generateInitUILabel("寬:");
         Label bgColorLabel=DrawingTools.generateInitUILabel("背景顏色:");
