@@ -18,7 +18,6 @@ public class Project {
 
     public Project(int width,int height){
         photoElementTypes = new ArrayList<PhotoElementType>();
-        this.addPhotoElementType(new PhotoElementType("預設"));
         this.width = width;
         this.height = height;
         photoFiles=new PhotoFiles();
@@ -94,4 +93,30 @@ public class Project {
         return -1;
     }
 
+    public void printAll(){
+        System.out.println("=======V");
+        for(PhotoElementType pet : photoElementTypes){
+            System.out.printf("%s:\t",pet.getTypeName());
+            for(PhotoElement pe:pet.getPhotoElements()){
+                System.out.printf("%s,",pe.getName());
+            }
+            System.out.println(";");
+        }
+        System.out.println("=======^");
+    }
+    public int defaultAddPhotoElement(PhotoElement pe){
+        if(photoElementTypes.size()==0){
+            addPhotoElementType("預設");
+        }
+        photoElementTypes.get(0).addPhotoElement(pe);
+        return photoElementTypes.get(0).getPhotoElements().size()-1;
+    }
+
+    public String[] getAllTypeNames(){
+        String[] ret=new String[photoElementTypes.size()];
+        for(int i=0;i<photoElementTypes.size();++i){
+            ret[i]=photoElementTypes.get(i).getTypeName();
+        }
+        return ret;
+    }
 }

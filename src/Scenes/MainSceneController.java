@@ -63,20 +63,13 @@ public class MainSceneController implements Initializable{
     final Project project;
     int photoElementTypeId;
     int photoElementId;
-    ObservableList<String> tag = FXCollections.observableArrayList("預設");
+    // ObservableList<String> tag = FXCollections.observableArrayList();
     public MainSceneController() {
-        int projectWidth;
-        int projectHeight;
-        projectWidth=400;
-        projectHeight=300;
-        project = new Project(projectWidth, projectHeight);
+        project = new Project(400, 300);
         project.addBackgroundColor(new Color(1,0,0,1));
         project.addBackgroundColor(new Color(0,1,0,1));
         project.addBackgroundColor(new Color(0,0,1,1));
         project.getBackgroundColorList().setDefaultColorPossibility();
-
-        // workingCanvas.setWidth(project.getWidth());
-        // workingCanvas.setHeight(project.getHeight());
     }
 
     @FXML
@@ -125,10 +118,7 @@ public class MainSceneController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         
         initUI();
-        // System.out.printf("%d %d%n%s",project.getHeight(),project.getWidth(),project.getBackgroundColorList().get(0));
-        // Scenes.initUI newInitUI=new initUI();
-        // newInitUI.callInitUI();
-
+    
         String[] workModes={"畫筆","去背"};
         modeChoiceBox.getItems().addAll(workModes);
         modeChoiceBox.setOnAction(this::changeWorkMode);
@@ -142,9 +132,9 @@ public class MainSceneController implements Initializable{
         setPossibility.setOnKeyPressed(this::baseSetting);
         setName.setOnKeyPressed(this::setName);
         addNewTag.setOnKeyPressed(this::setNewTag);
-        tagComboBox.setItems(tag);
+        tagComboBox.setItems(FXCollections.observableArrayList(project.getAllTypeNames()));
         tagComboBox.setOnAction(this::selectTag);
-        // workingPane.setBackground(new Background(new BackgroundImage(new Image("shark.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+        tagComboBox.setVisibleRowCount(10);
     }
  
     @FXML
@@ -161,17 +151,18 @@ public class MainSceneController implements Initializable{
     @FXML
     void saveBtnAction(ActionEvent event) {
         
-        ArrayList<PhotoElement> list = new ArrayList<PhotoElement>();
-        for(PhotoElement pe:project.getPhotoElementTypes().get(0).getPhotoElements()){
-            list.add(pe);
-        }
-        Canvas c=DrawingTools.generatePreview((double)project.getWidth(),(double)project.getHeight(),project.getBackgroundColorList().getColorList().get(0).getColor(), list);
-        Pane p= new Pane();
-        p.getChildren().add(c);
-        Stage stage = new Stage();
-        stage.setTitle("My New Stage Title");
-        stage.setScene(new Scene(p, 450, 450));
-        stage.show();
+        // ArrayList<PhotoElement> list = new ArrayList<PhotoElement>();
+        // for(PhotoElement pe:project.getPhotoElementTypes().get(0).getPhotoElements()){
+        //     list.add(pe);
+        // }
+        // Canvas c=DrawingTools.generatePreview((double)project.getWidth(),(double)project.getHeight(),project.getBackgroundColorList().getColorList().get(0).getColor(), list);
+        // Pane p= new Pane();
+        // p.getChildren().add(c);
+        // Stage stage = new Stage();
+        // stage.setTitle("My New Stage Title");
+        // stage.setScene(new Scene(p, 450, 450));
+        // stage.show();
+        project.printAll();
     }
 
     @FXML
@@ -262,10 +253,8 @@ public class MainSceneController implements Initializable{
                 if(!DrawingTools.colorInList(colorPicker.getValue(),bgColors)){
                     colorPane.getChildren().clear();
                     bgColors.add(colorPicker.getValue());
-                    // ArrayList<Button> btnList= new ArrayList<Button>();
                     for(Color c:bgColors){
                         Button btn=DrawingTools.generateColorButton(c);
-                        // btnList.add(btn);
                         colorPane.getChildren().add(btn);
                     }
                 }
@@ -287,6 +276,7 @@ public class MainSceneController implements Initializable{
                 for(Color c:bgColors){
                     project.addBackgroundColor(c);
                 }
+                project.getBackgroundColorList().setDefaultColorPossibility();
                 stage.close();
             }
         });
@@ -308,10 +298,10 @@ public class MainSceneController implements Initializable{
                 @Override
                 public void handle(ActionEvent event) {
                     PhotoElement pe=DrawingTools.fileToPhotoElement(file);
-                    project.getPhotoElementTypes().get(0).addPhotoElement(pe);
-                    updateElementTable();
+                    // project.getPhotoElementTypes().get(0).addPhotoElement(pe);
+                    photoElementId=project.defaultAddPhotoElement(pe);
                     photoElementTypeId=0;
-                    photoElementId=project.getPhotoElementTypes().get(0).getPhotoElements().size()-1;
+                    updateElementTable();
                     updateWorkCanvas();
                 }
             });
@@ -320,6 +310,7 @@ public class MainSceneController implements Initializable{
 
     void updateWorkCanvas(){
         updateBaseSetting();
+        updateTag();
         if(photoElementTypeId!=-1&&photoElementId!=-1){
             workingCanvas=project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPixels();
         }else{
@@ -405,7 +396,6 @@ public class MainSceneController implements Initializable{
                         photoElementId=peID;
                         photoElementTypeId=petID;
                         updateWorkCanvas();
-                        
                     }
                 });
                 btn.setOnMouseClicked((EventHandler<MouseEvent>) new EventHandler<MouseEvent>() {
@@ -428,7 +418,6 @@ public class MainSceneController implements Initializable{
                                     }
                                     updateWorkCanvas();
                                     updateElementTable();
-                                    updateTag();
                                 }
                             });
                             btn.setContextMenu(contextMenu);
@@ -504,49 +493,59 @@ public class MainSceneController implements Initializable{
             setWidth.setText("");
             setPosX.setText("");
             setPosY.setText("");
+            setPossibility.setText("");
+            setName.setText("");
         }
     }
-    public void setNewTag(KeyEvent event)
-    {
+    public void setNewTag(KeyEvent event){
         if(event.getCode().equals(KeyCode.ENTER)&&photoElementId!=-1&&photoElementTypeId!=-1){
             try {
-                if(addNewTag.getText()!="")
-                {
-                    tag.add(addNewTag.getText());
+                if(addNewTag.getText()!=""){
+                    project.addPhotoElementType(addNewTag.getText());
+                    updateElementTable();
                     addNewTag.setText("");
+                    updateTag();
                 }
             }
             catch (Exception e) {
-                System.out.println(e);;
+                System.out.println(e);
                 showDialog();
             }
         }
     }
     public void selectTag(ActionEvent event){
+        System.out.println("selectTag call");
         String tagName = tagComboBox.getSelectionModel().getSelectedItem();
-        System.out.println(tagName);
-        setTag(tagName);
-        updateElementTable();
+        // System.out.println(tagName);
+        if(tagName!=""){
+            setTag(tagName);
+            updateElementTable();
+        }
     }
     public void setTag(String tagName){
         PhotoElement pe= project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId);
         int tagIndex=project.findPhotoElementType(tagName);
-        if(tagIndex==-1)
-        {
+        if(tagIndex==-1){
             project.addPhotoElementType(tagName);
             project.getPhotoElementTypes().get(project.getPhotoElementTypes().size()-1).addPhotoElement(pe);
             project.delPhotoElement(photoElementTypeId, photoElementId);
-        }
-        else
-        {
+        }else{
             project.getPhotoElementTypes().get(tagIndex).addPhotoElement(pe);
             project.delPhotoElement(photoElementTypeId, photoElementId);
-            System.out.printf("%s\n",project.getPhotoElementTypes().get(tagIndex).getTypeName());
+            photoElementTypeId=tagIndex;
+            photoElementId=project.getPhotoElementTypes().get(tagIndex).getPhotoElements().size()-1;
+            updateElementTable();
+            updateWorkCanvas();
+            // System.out.printf("%s\n",project.getPhotoElementTypes().get(tagIndex).getTypeName());
         }
+        updateTag();
     }
-    public void updateTag()
-    {
+    public void updateTag(){
+        tagComboBox.setOnAction(null);
+        tagComboBox.setItems(FXCollections.observableArrayList(project.getAllTypeNames()));
         tagComboBox.setValue(project.getPhotoElementTypes().get(photoElementTypeId).getTypeName());
+        tagComboBox.setOnAction(this::selectTag);
+        // tagComboBox.setOnAction(this::selectTag);
         //tagComboBox.getSelectionModel().select(photoElementTypeId);
     }
 
