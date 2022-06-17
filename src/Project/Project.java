@@ -85,7 +85,7 @@ public class Project {
     {
         for(int i=0;i<photoElementTypes.size();i++)
         {
-            if(photoElementTypes.get(i).equals(tagName))
+            if(photoElementTypes.get(i).getTypeName().equals(tagName))
             {
                 return i;
             }

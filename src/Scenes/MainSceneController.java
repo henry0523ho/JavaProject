@@ -525,6 +525,7 @@ public class MainSceneController implements Initializable{
     public void setTag(String tagName){
         PhotoElement pe= project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId);
         int tagIndex=project.findPhotoElementType(tagName);
+        System.out.printf("%s %d%n", tagName, tagIndex);
         if(tagIndex==-1){
             project.addPhotoElementType(tagName);
             project.getPhotoElementTypes().get(project.getPhotoElementTypes().size()-1).addPhotoElement(pe);
