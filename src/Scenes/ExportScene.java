@@ -53,7 +53,7 @@ public class ExportScene{
     DirectoryChooser directoryChooser=new DirectoryChooser();
     int amount;
     String addressPath;
-    public Scene generateScene(Project project)
+    public Scene generateScene(Project project,Stage stage)
     {
         anchorPane.setMaxHeight(Double.MAX_VALUE);
         anchorPane.setMaxWidth(Double.MAX_VALUE);
@@ -137,7 +137,7 @@ public class ExportScene{
             @Override
             public void handle(ActionEvent arg0) {
                 project.output(amount, addressPath);
-                
+                stage.close();
             }
             
         });
@@ -186,7 +186,7 @@ public class ExportScene{
 
         dialog.showAndWait();
     }
-
+    
     
     
 }
