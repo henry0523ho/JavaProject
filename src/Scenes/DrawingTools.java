@@ -185,7 +185,7 @@ public class DrawingTools {
             SnapshotParameters params = new SnapshotParameters();
             params.setFill(Color.TRANSPARENT);
             WritableImage image = c.snapshot(params, null);
-            ret.getGraphicsContext2D().drawImage(image, pe.getPosX(), pe.getPosY(),pe.getWidth(),pe.getWidth());
+            gc.drawImage(image, pe.getPosX(), pe.getPosY(),pe.getWidth(),pe.getWidth());
         }
         return ret;
     }

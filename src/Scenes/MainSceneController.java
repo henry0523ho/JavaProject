@@ -67,9 +67,6 @@ public class MainSceneController implements Initializable{
     // ObservableList<String> tag = FXCollections.observableArrayList();
     public MainSceneController() {
         project = new Project(400, 300);
-        project.addBackgroundColor(new Color(1,0,0,1));
-        project.addBackgroundColor(new Color(0,1,0,1));
-        project.addBackgroundColor(new Color(0,0,1,1));
         project.getBackgroundColorList().setDefaultColorPossibility();
     }
 

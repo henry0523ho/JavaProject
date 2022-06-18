@@ -61,7 +61,7 @@ public class RandomColorList {
         double cur=0.0f;
         for(int i=0;i<colorList.size();++i){
             cur+=colorList.get(i).getPossibility();
-            if(rand<cur) return colorList.get(i-1).getColor();
+            if(rand<cur) return colorList.get(i).getColor();
         }
         return Color.TRANSPARENT;
     }
