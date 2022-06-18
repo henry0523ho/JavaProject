@@ -549,7 +549,7 @@ public class MainSceneController implements Initializable{
         ExportScene exportScene=new ExportScene();
         Scene scene;
         Stage stage=new Stage();
-        scene=exportScene.generateScene(project);
+        scene=exportScene.generateScene(project,stage);
         stage.setScene(scene);
         stage.showAndWait();
     }
