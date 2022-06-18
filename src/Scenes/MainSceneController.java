@@ -75,13 +75,10 @@ public class MainSceneController implements Initializable{
 
     @FXML
     private Button btn;
-
     @FXML
     private Canvas workingCanvas;
-
     @FXML
     private FlowPane mediaPane;
-
     @FXML
     private Button addMediaFileBtn;
     @FXML
@@ -114,6 +111,8 @@ public class MainSceneController implements Initializable{
     private TextField setName;
     @FXML
     private TextField addNewTag;
+    @FXML
+    private MenuItem menuItemExport;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -136,6 +135,8 @@ public class MainSceneController implements Initializable{
         tagComboBox.setItems(FXCollections.observableArrayList(project.getAllTypeNames()));
         tagComboBox.setOnAction(this::selectTag);
         tagComboBox.setVisibleRowCount(10);
+        menuItemExport.setOnAction(this::callExportScene);
+        
     }
  
     @FXML
@@ -545,6 +546,15 @@ public class MainSceneController implements Initializable{
         tagComboBox.setOnAction(this::selectTag);
         // tagComboBox.setOnAction(this::selectTag);
         //tagComboBox.getSelectionModel().select(photoElementTypeId);
+    }
+    public void callExportScene(ActionEvent event)
+    {
+        ExportScene exportScene=new ExportScene();
+        Scene scene;
+        Stage stage=new Stage();
+        scene=exportScene.generateScene(project);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
 }
