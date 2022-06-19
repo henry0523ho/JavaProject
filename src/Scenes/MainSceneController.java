@@ -91,7 +91,7 @@ public class MainSceneController implements Initializable{
     @FXML
     private Label sliderLabel;
     @FXML
-    private TextField setHeigth;
+    private TextField setHeight;
     @FXML
     private TextField setWidth;
     @FXML
@@ -110,11 +110,16 @@ public class MainSceneController implements Initializable{
     private TextField addNewTag;
     @FXML
     private MenuItem menuItemExport;
+    @FXML
+    private Pane previewPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
         initUI();
+        previewPane.setPrefSize(project.getWidth(), project.getHeight());
+        previewPane.setMinSize(project.getWidth(), project.getHeight());
+        previewPane.setMaxSize(project.getWidth(), project.getHeight());
     
         String[] workModes={"畫筆","去背"};
         modeChoiceBox.getItems().addAll(workModes);
@@ -122,7 +127,7 @@ public class MainSceneController implements Initializable{
         colorPicker.setValue(Color.BLACK);
         slider.setShowTickLabels(true);
         slider.setShowTickMarks(true);
-        setHeigth.setOnKeyPressed(this::baseSetting);
+        setHeight.setOnKeyPressed(this::baseSetting);
         setWidth.setOnKeyPressed(this::baseSetting);
         setPosX.setOnKeyPressed(this::baseSetting);
         setPosY.setOnKeyPressed(this::baseSetting);
@@ -146,19 +151,19 @@ public class MainSceneController implements Initializable{
         updateElementTable();
         updateWorkCanvas();
     }
-    @FXML
-    void saveBtnAction(ActionEvent event) {
+    // @FXML
+    // void saveBtnAction(ActionEvent event) {
         
         
-        Canvas c=project.previewPhoto(photoElementTypeId, photoElementId);
-        Pane p= new Pane();
-        p.getChildren().add(c);
-        Stage stage = new Stage();
-        stage.setTitle("My New Stage Title");
-        stage.setScene(new Scene(p, project.getWidth(), project.getHeight()));
-        stage.show();
+    //     Canvas c=project.previewPhoto(photoElementTypeId, photoElementId);
+    //     Pane p= new Pane();
+    //     p.getChildren().add(c);
+    //     Stage stage = new Stage();
+    //     stage.setTitle("My New Stage Title");
+    //     stage.setScene(new Scene(p, project.getWidth(), project.getHeight()));
+    //     stage.show();
         
-    }
+    // }
 
     @FXML
     void addMediaFile(DragEvent event) {
@@ -305,6 +310,7 @@ public class MainSceneController implements Initializable{
 
     void updateWorkCanvas(){
         updateBaseSetting();
+        updatePreviewPane();
         updateTag();
         if(photoElementTypeId!=-1&&photoElementId!=-1){
             workingCanvas=project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPixels();
@@ -336,6 +342,7 @@ public class MainSceneController implements Initializable{
     }
 
     public void paintHandler(MouseEvent event){
+        updatePreviewPane();
         GraphicsContext gc = workingCanvas.getGraphicsContext2D();
         gc.setFill(colorPicker.getValue());
         gc.fillOval(event.getX()-slider.getValue()/2, event.getY()-slider.getValue() / 2, slider.getValue(), slider.getValue());
@@ -357,6 +364,7 @@ public class MainSceneController implements Initializable{
                 GraphicsContext gc = workingCanvas.getGraphicsContext2D();
                 gc=DrawingTools.removeBackground(gc,(int)event.getX(), (int)event.getY(), slider.getValue());
                 updateElementTable();
+                updatePreviewPane();
             }
         });
         workingCanvas.setOnMouseDragged(null);
@@ -437,7 +445,6 @@ public class MainSceneController implements Initializable{
         dialog.showAndWait();
     }
     public void setName(KeyEvent event) {
-        //System.out.printf("%s\n",setHeigth.getText());
         if(event.getCode().equals(KeyCode.ENTER)&&photoElementId!=-1&&photoElementTypeId!=-1){
             try {
                 project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setName(setName.getText());
@@ -452,15 +459,14 @@ public class MainSceneController implements Initializable{
         
     }
     public void baseSetting(KeyEvent event) {
-        //System.out.printf("%s\n",setHeigth.getText());
         if(event.getCode().equals(KeyCode.ENTER)&&photoElementId!=-1&&photoElementTypeId!=-1){
             try {
-                project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setHeight(Double.parseDouble(setHeigth.getText()));
+                project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setHeight(Double.parseDouble(setHeight.getText()));
                 project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setWidth(Double.parseDouble(setWidth.getText()));
                 project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setPosX(Double.parseDouble(setPosX.getText()));
                 project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setPosY(Double.parseDouble(setPosY.getText()));
                 project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).setPossibility(Double.parseDouble(setPossibility.getText()));
-
+                updatePreviewPane();
             }
             catch(NumberFormatException e)
             {
@@ -474,17 +480,17 @@ public class MainSceneController implements Initializable{
         }
         
     }
-    public void updateBaseSetting()
-    {
+    public void updateBaseSetting(){
         if(photoElementTypeId!=-1&&photoElementId!=-1){
-            setHeigth.setText(String.format("%.2f", project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getHeight()));
+            setHeight.setText(String.format("%.2f", project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getHeight()));
             setWidth.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getWidth()));
             setPosX.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosX()));
             setPosY.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPosY()));
             setPossibility.setText(String.format("%.2f",project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getPossibility()));
             setName.setText(String.format("%s", project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId).getName()));
+            updatePreviewPane();
         }else{
-            setHeigth.setText("");
+            setHeight.setText("");
             setWidth.setText("");
             setPosX.setText("");
             setPosY.setText("");
@@ -509,18 +515,16 @@ public class MainSceneController implements Initializable{
         }
     }
     public void selectTag(ActionEvent event){
-        System.out.println("selectTag call");
         String tagName = tagComboBox.getSelectionModel().getSelectedItem();
-        // System.out.println(tagName);
         if(tagName!=""){
             setTag(tagName);
             updateElementTable();
+            updatePreviewPane();
         }
     }
     public void setTag(String tagName){
         PhotoElement pe= project.getPhotoElementTypes().get(photoElementTypeId).getPhotoElements().get(photoElementId);
         int tagIndex=project.findPhotoElementType(tagName);
-        System.out.printf("%s %d%n", tagName, tagIndex);
         if(tagIndex==-1){
             project.addPhotoElementType(tagName);
             project.getPhotoElementTypes().get(project.getPhotoElementTypes().size()-1).addPhotoElement(pe);
@@ -552,6 +556,13 @@ public class MainSceneController implements Initializable{
         scene=exportScene.generateScene(project,stage);
         stage.setScene(scene);
         stage.showAndWait();
+    }
+    public void updatePreviewPane(){
+        // System.out.println("called");
+        previewPane.getChildren().clear();
+        if(photoElementTypeId!=-1&&photoElementId!=-1){
+            previewPane.getChildren().add(project.previewPhoto(photoElementTypeId,photoElementId));
+        }
     }
 
 }

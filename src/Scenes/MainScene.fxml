@@ -105,13 +105,6 @@
                                  </children>
                               </FlowPane>
                            </top>
-                           <bottom>
-                              <FlowPane prefHeight="25.0" prefWidth="398.0" BorderPane.alignment="CENTER">
-                                 <children>
-                                    <Button fx:id="btn" mnemonicParsing="false" onAction="#saveBtnAction" text="存檔" />
-                                 </children>
-                              </FlowPane>
-                           </bottom>
                         </BorderPane>
                         <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
                           <tabs>
@@ -156,51 +149,44 @@
                                                 <Font name="System Bold Italic" size="20.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="38.0" layoutY="54.0" prefHeight="15.0" prefWidth="28.0" text="長:">
+                                          <Label layoutX="28.0" layoutY="54.0" prefHeight="15.0" prefWidth="28.0" text="長:">
                                              <font>
                                                 <Font size="20.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="39.0" layoutY="83.0" text="寬:">
+                                          <Label layoutX="28.0" layoutY="83.0" text="寬:">
                                              <font>
                                                 <Font size="20.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="setHeigth" layoutX="66.0" layoutY="56.0" />
-                                          <TextField fx:id="setWidth" layoutX="66.0" layoutY="85.0" />
-                                          <Label layoutX="13.0" layoutY="124.0" prefHeight="40.0" prefWidth="92.0" text="設定位置:" textAlignment="CENTER">
+                                          <TextField fx:id="setHeight" layoutX="56.0" layoutY="56.0" />
+                                          <TextField fx:id="setWidth" layoutX="56.0" layoutY="85.0" />
+                                          <Label layoutX="14.0" layoutY="108.0" prefHeight="40.0" prefWidth="92.0" text="設定位置:" textAlignment="CENTER">
                                              <font>
                                                 <Font name="System Bold Italic" size="20.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="41.0" layoutY="191.0" prefHeight="15.0" prefWidth="28.0" text="Y:">
+                                          <Label layoutX="28.0" layoutY="170.0" prefHeight="15.0" prefWidth="28.0" text="Y:">
                                              <font>
                                                 <Font size="20.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="41.0" layoutY="164.0" prefHeight="15.0" prefWidth="28.0" text="X:">
+                                          <Label layoutX="28.0" layoutY="143.0" prefHeight="15.0" prefWidth="28.0" text="X:">
                                              <font>
                                                 <Font size="20.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="setPosY" layoutX="66.0" layoutY="193.0" />
-                                          <TextField fx:id="setPosX" layoutX="66.0" layoutY="166.0" />
+                                          <TextField fx:id="setPosY" layoutX="56.0" layoutY="172.0" />
+                                          <TextField fx:id="setPosX" layoutX="56.0" layoutY="145.0" />
+                                          <Pane fx:id="previewPane" layoutX="15.0" layoutY="227.0" prefHeight="200.0" prefWidth="200.0" />
+                                          <Label layoutX="14.0" layoutY="197.0" prefHeight="40.0" prefWidth="92.0" text="預覽:" textAlignment="CENTER">
+                                             <font>
+                                                <Font name="System Bold Italic" size="20.0" />
+                                             </font>
+                                          </Label>
                                        </children></AnchorPane>
                               </content>
                             </Tab>
-                              <Tab text="預覽">
-                                 <content>
-                                    <BorderPane prefHeight="200.0" prefWidth="200.0">
-                                       <center>
-                                          <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                                             <content>
-                                                <Canvas fx:id="showCanvas" height="200.0" width="200.0" />
-                                             </content>
-                                          </ScrollPane>
-                                       </center>
-                                    </BorderPane>
-                                 </content>
-                              </Tab>
                           </tabs>
                         </TabPane>
                     </items>
