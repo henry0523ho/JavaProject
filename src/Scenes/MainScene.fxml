@@ -79,7 +79,7 @@
                   </FlowPane>
                </top>
                <center>
-                  <FlowPane fx:id="mediaPane" onDragDropped="#addMediaFile" prefHeight="535.0" prefWidth="102.0" BorderPane.alignment="CENTER" />
+                  <FlowPane fx:id="mediaPane" onDragDropped="#addMediaFile" rowValignment="TOP" BorderPane.alignment="TOP_LEFT" />
                </center>
             </BorderPane>
             <SplitPane dividerPositions="0.8028673835125448" orientation="VERTICAL" prefHeight="558.0" prefWidth="759.0">

@@ -413,14 +413,16 @@ public class MainSceneController implements Initializable{
                                 @Override
                                 public void handle(ActionEvent event) {
                                     project.delPhotoElement(petID,peID);
-                                    if(petID==photoElementTypeId&&peID==photoElementId){
-                                        photoElementTypeId=-1;
-                                        photoElementId=-1;
-                                    }else if(petID==photoElementTypeId&&peID<photoElementId){
-                                        photoElementId-=1;
-                                    }
-                                    updateWorkCanvas();
+                                    photoElementTypeId = -1;
+                                    photoElementId = -1;
+                                    // if(petID==photoElementTypeId&&peID==photoElementId){
+                                    //     photoElementTypeId=-1;
+                                    //     photoElementId=-1;
+                                    // }else if(petID==photoElementTypeId&&peID<photoElementId){
+                                    //     photoElementId-=1;
+                                    // }
                                     updateElementTable();
+                                    updateWorkCanvas();
                                 }
                             });
                             btn.setContextMenu(contextMenu);
@@ -543,10 +545,10 @@ public class MainSceneController implements Initializable{
     public void updateTag(){
         tagComboBox.setOnAction(null);
         tagComboBox.setItems(FXCollections.observableArrayList(project.getAllTypeNames()));
-        tagComboBox.setValue(project.getPhotoElementTypes().get(photoElementTypeId).getTypeName());
+        if(photoElementTypeId!=-1){
+            tagComboBox.setValue(project.getPhotoElementTypes().get(photoElementTypeId).getTypeName());
+        }
         tagComboBox.setOnAction(this::selectTag);
-        // tagComboBox.setOnAction(this::selectTag);
-        //tagComboBox.getSelectionModel().select(photoElementTypeId);
     }
     public void callExportScene(ActionEvent event)
     {
