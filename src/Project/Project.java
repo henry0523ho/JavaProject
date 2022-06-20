@@ -1,11 +1,9 @@
 package Project;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import Scenes.DrawingTools;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 
@@ -14,7 +12,6 @@ public class Project {
     private int width;
     private int height;
     private PhotoFiles photoFiles;
-    private File saveDir;
     private RandomColorList backgroundColorList;
 
     public Project(int width,int height){
@@ -22,7 +19,6 @@ public class Project {
         this.width = width;
         this.height = height;
         photoFiles=new PhotoFiles();
-        saveDir=null;
         backgroundColorList=new RandomColorList();
     }
 
@@ -38,13 +34,6 @@ public class Project {
     }
     public void setHeight(int height) {
         this.height = height;
-    }
-
-    public void setSaveDir(File saveDir) {
-        this.saveDir = saveDir;
-    }
-    public File getSaveDir(){
-        return saveDir;
     }
 
     public PhotoFiles getPhotoFiles(){
@@ -74,11 +63,7 @@ public class Project {
     public void addPhotoElementType(String typeName){
         this.photoElementTypes.add(new PhotoElementType(typeName));
     }
-    public void generateResult(int n){
-        Canvas canvas=new Canvas(width, height);
-        GraphicsContext gc=canvas.getGraphicsContext2D();
-        
-    }
+
     public void delPhotoElement(int petId,int peId){
         photoElementTypes.get(petId).getPhotoElements().remove(peId);
     }
@@ -94,17 +79,6 @@ public class Project {
         return -1;
     }
 
-    public void printAll(){
-        System.out.println("=======V");
-        for(PhotoElementType pet : photoElementTypes){
-            System.out.printf("%s:\t",pet.getTypeName());
-            for(PhotoElement pe:pet.getPhotoElements()){
-                System.out.printf("%s,",pe.getName());
-            }
-            System.out.println(";");
-        }
-        System.out.println("=======^");
-    }
     public int defaultAddPhotoElement(PhotoElement pe){
         if(photoElementTypes.size()==0){
             addPhotoElementType("預設");
