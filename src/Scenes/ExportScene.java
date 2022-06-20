@@ -3,15 +3,9 @@ package Scenes;
 import Project.Project;
 
 import java.io.File;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -114,7 +108,6 @@ public class ExportScene{
 
             @Override
             public void handle(ActionEvent arg0) {
-                // TODO Auto-generated method stub
                 File file=directoryChooser.showDialog(null);
                 if(file!=null)
                 {

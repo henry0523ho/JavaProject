@@ -1,12 +1,10 @@
 package Scenes;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
@@ -14,14 +12,11 @@ import Project.PhotoElement;
 import Project.PhotoElementType;
 import Project.Project;
 
-import javafx.fxml.FXMLLoader;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -43,8 +38,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -55,10 +48,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ComboBox;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 
 public class MainSceneController implements Initializable{
     final Project project;
@@ -209,9 +199,8 @@ public class MainSceneController implements Initializable{
         heightTf.setOnKeyPressed(new EventHandler<KeyEvent>(){
             @Override
             public void handle(KeyEvent e) {
-                double input;
                 try {
-                    input = Double.parseDouble(heightTf.getText());
+                    Double.parseDouble(heightTf.getText());
                 } catch (Exception ex) {
                     showDialog();
                 }
