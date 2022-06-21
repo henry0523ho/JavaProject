@@ -41,9 +41,11 @@ public class PhotoElementType {
     }
     public PhotoElement dealOnePhotoElement(){
         SecureRandom secureRandom=new SecureRandom();
+        double sum=0.0f;
+        double rand=secureRandom.nextDouble();
         for(PhotoElement pe:photoElements){
-            double rand=secureRandom.nextDouble();
-            if(rand<pe.getPossibility()){
+            sum+=pe.getPossibility();
+            if(sum<rand){
                 return pe;
             }
         }
