@@ -45,7 +45,7 @@ public class PhotoElementType {
         double rand=secureRandom.nextDouble();
         for(PhotoElement pe:photoElements){
             sum+=pe.getPossibility();
-            if(sum<rand){
+            if(rand<sum){
                 return pe;
             }
         }
