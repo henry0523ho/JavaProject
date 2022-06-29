@@ -29,8 +29,7 @@ public class PhotoElement {
     public void setHeight(double height){
         this.height=height;
     }
-    public double getHeight()
-    {
+    public double getHeight(){
         return this.height;
     }
     public void setWidth(double width){

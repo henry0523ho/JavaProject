@@ -61,8 +61,6 @@ public class MainSceneController implements Initializable{
     }
 
     @FXML
-    private Button btn;
-    @FXML
     private Canvas workingCanvas;
     @FXML
     private FlowPane mediaPane;
@@ -550,7 +548,6 @@ public class MainSceneController implements Initializable{
         stage.showAndWait();
     }
     public void updatePreviewPane(){
-        // System.out.println("called");
         previewPane.getChildren().clear();
         if(photoElementTypeId!=-1&&photoElementId!=-1){
             previewPane.getChildren().add(project.previewPhoto(photoElementTypeId,photoElementId));
